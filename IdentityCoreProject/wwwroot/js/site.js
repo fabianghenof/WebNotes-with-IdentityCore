@@ -221,6 +221,7 @@ $(document).ready(function () {
         moveNoteDown($(this));
     });
 
-    $('#email-submit-btn').on('click', sendEmail);
+    $('#download-notes').on('click', downloadNotes);
+
 });
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApplication2.Models
+namespace IdentityCoreProject.Models
 {
     public class WebNote
     {
@@ -12,5 +9,10 @@ namespace WebApplication2.Models
         public string Content { get; set; }
         public string Color { get; set; }
         public int OrderIndex { get; set; }
+
+        public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<WebApplication2.Models.WebNote>
+@model List<WebNote>
 
 <!--Main Jumbotron-->
 <div class="jumbotron" id="jumbotron">
@@ -14,7 +14,7 @@
 
     <!--New Note Form-->
     <div class="hidden" id="new-note-form">
-        <form class="form-group form-group-lg">
+        <form class="formz-group form-group-lg">
             <input type="text" class="form-control" placeholder="Title" id="note-title">
             <textarea class="form-control" rows="3" placeholder="Content" id="note-content"></textarea>
 

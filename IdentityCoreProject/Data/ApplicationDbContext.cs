@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using IdentityCoreProject.Models;
-using WebApplication2.Models;
 
 namespace IdentityCoreProject.Data
 {

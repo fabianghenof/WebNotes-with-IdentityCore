@@ -1,29 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication2.Models;
-using Microsoft.EntityFrameworkCore;
+using IdentityCoreProject.Models;
 using Microsoft.AspNetCore.Hosting;
 using IdentityCoreProject.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using CsvHelper;
 
 namespace IdentityCoreProject.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
-        public HomeController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public HomeController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
         }
+
 
         public IActionResult Index()
         {
-            var notes = _context.WebNotes.OrderBy(note => note.OrderIndex).ToList();
-            return View(notes);
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            var notes = userId == null ? new List<WebNote>() : _context.WebNotes
+                .Where(n => n.UserId == userId)
+                .OrderBy(x => x.OrderIndex)
+                .ToList();
+                return View(notes);
         }
 
         public IActionResult About()
@@ -72,7 +84,7 @@ namespace IdentityCoreProject.Controllers
 
 
         [HttpPost("saveNote")]
-        public IActionResult Save(WebNote webNote)
+        public async Task<IActionResult> Save(WebNote webNote)
         {
             int nbrOfNotes = _context.WebNotes.Count();
             //query list here .ToList apoi foloseste asta in forloop
@@ -85,6 +97,13 @@ namespace IdentityCoreProject.Controllers
                     _context.WebNotes.Update(noteToModify);
                 }
             }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            webNote.User = user;
+
+            user.WebNotes.Add(webNote);
+            var toUpdate = _context.Users.FirstOrDefault(x => x.Id == user.Id);
+            _context.Update(toUpdate);
 
             _context.Add(webNote);
             _context.SaveChanges();
@@ -164,8 +183,33 @@ namespace IdentityCoreProject.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        public FileResult DownloadNotes()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var myWebNotes = userId == null ? new List<WebNote>() : _context.WebNotes
+                .Where(n => n.UserId == userId)
+                .OrderBy(x => x.OrderIndex)
+                .ToList();
 
-        public IActionResult Error()
+            var trimmedWebNotes = myWebNotes.Select(note => new CsvNotes
+            {
+                Id = note.Id.ToString(),
+                Title = note.Title,
+                Content = note.Content
+            }).ToList();
+   
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            var csv = new CsvWriter(writer);
+            csv.WriteRecords(trimmedWebNotes);
+            writer.Flush();
+            stream.Position = 0;
+
+            return File(stream, "text/csv", "votes.csv");
+        }
+
+            public IActionResult Error()
         {
             return View();
         }

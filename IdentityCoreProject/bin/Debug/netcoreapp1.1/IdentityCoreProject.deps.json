@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "b5e2ea25cf5710f3f42b78f2e0cc8660ee1f709f"
+    "signature": "d64a5d8757f4f9d16cabebf064ec1db12373abd6"
   },
   "compilationOptions": {
     "defines": [
@@ -23,6 +23,7 @@
     ".NETCoreApp,Version=v1.1": {
       "identitycoreproject/1.0.0": {
         "dependencies": {
+          "CsvHelper": "2.16.3",
           "Microsoft.ApplicationInsights.AspNetCore": "2.0.0",
           "Microsoft.AspNetCore": "1.1.2",
           "Microsoft.AspNetCore.Authentication.Cookies": "1.1.2",
@@ -46,6 +47,19 @@
         },
         "compile": {
           "IdentityCoreProject.dll": {}
+        }
+      },
+      "csvhelper/2.16.3": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.3.0",
+          "NETStandard.Library": "1.6.1",
+          "System.Reflection.TypeExtensions": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/CsvHelper.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/CsvHelper.dll": {}
         }
       },
       "microsoft.applicationinsights/2.2.0": {
@@ -3573,6 +3587,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "csvhelper/2.16.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RTxNM9Q6MDg3WpGorrK7E9eXsjGhtDLYx5dBuHol5kHDpu7kND2NveHDVCFQgGxowuDB57ettaOEn3EJqiJ1oQ==",
+      "path": "csvhelper/2.16.3",
+      "hashPath": "csvhelper.2.16.3.nupkg.sha512"
     },
     "microsoft.applicationinsights/2.2.0": {
       "type": "package",
