@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CsvHelper;
+using IdentityCoreProject.Services;
+using Microsoft.Extensions.Logging;
 
 namespace IdentityCoreProject.Controllers
 {
@@ -19,131 +21,67 @@ namespace IdentityCoreProject.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public HomeController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
+        private readonly IWebNoteService _webNoteService;
+        private readonly ILogger _logger;
+
+
+        public HomeController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IWebNoteService webNoteService, ILogger<HomeController> logger)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
+            _webNoteService = webNoteService;
+            _logger = logger;
         }
-
 
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
 
-            var notes = userId == null ? new List<WebNote>() : _context.WebNotes
-                .Where(n => n.UserId == userId)
-                .OrderBy(x => x.OrderIndex)
-                .ToList();
+            var notes = _webNoteService.GetUsersNotes(userId);
                 return View(notes);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
         }
 
         [HttpPost("updateNoteTitle")]
         public IActionResult UpdateNoteTitle(int id, string title)
         {
-            var toUpdate = _context.WebNotes.FirstOrDefault(x => x.Id == id);
-            toUpdate.Title = title;
-            _context.Update(toUpdate);
-            _context.SaveChanges();
+            _webNoteService.UpdateTitle(id, title);
             return Ok();
         }
 
         [HttpPost("updateNoteContent")]
         public IActionResult UpdateNoteContent(int id, string content)
         {
-            var toUpdate = _context.WebNotes.FirstOrDefault(x => x.Id == id);
-            toUpdate.Content = content;
-            _context.Update(toUpdate);
-            _context.SaveChanges();
+            _webNoteService.UpdateContent(id, content);
             return Ok();
         }
-
 
         [HttpPost("deleteNote")]
         public IActionResult DeleteNote(int id)
         {
-            var toDelete = _context.WebNotes.SingleOrDefault(x => x.Id == id);
-            _context.WebNotes.Remove(toDelete);
-            _context.SaveChanges();
+            _webNoteService.DeleteNote(id);
             return Ok();
         }
-
 
         [HttpPost("saveNote")]
         public async Task<IActionResult> Save(WebNote webNote)
         {
-            int nbrOfNotes = _context.WebNotes.Count();
-            //query list here .ToList apoi foloseste asta in forloop
-            for (int i = 0; i < nbrOfNotes; i++)
-            {
-                var noteToModify = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == i);
-                if (noteToModify != null)
-                {
-                    noteToModify.OrderIndex++;
-                    _context.WebNotes.Update(noteToModify);
-                }
-            }
-
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            webNote.User = user;
-
-            user.WebNotes.Add(webNote);
-            var toUpdate = _context.Users.FirstOrDefault(x => x.Id == user.Id);
-            _context.Update(toUpdate);
-
-            _context.Add(webNote);
-            _context.SaveChanges();
+            _webNoteService.CreateNote(webNote, user);
             return Ok();
         }
-
 
         [HttpPost("moveNoteUp")]
         public IActionResult MoveNoteUp(int idOfClickedNote, int idOfAboveNote)
         {
-            var noteClickedOn = _context.WebNotes.FirstOrDefault(x => x.Id == idOfClickedNote);
-            var noteAbove = _context.WebNotes.FirstOrDefault(x => x.Id == idOfAboveNote);
-            int orderIndexToMoveTo = noteAbove.OrderIndex;
-
-            int temp = noteClickedOn.OrderIndex;
-
-            noteClickedOn.OrderIndex = orderIndexToMoveTo;
-            _context.Update(noteClickedOn);
-            noteAbove.OrderIndex = temp;
-            _context.Update(noteAbove);
-            _context.SaveChanges();
+            _webNoteService.MoveNoteUp(idOfClickedNote, idOfAboveNote);
             return Ok();
         }
 
         [HttpPost("moveNoteDown")]
         public IActionResult MoveNoteDown(int idOfClickedNote, int idOfBelowNote)
         {
-            var noteClickedOn = _context.WebNotes.FirstOrDefault(x => x.Id == idOfClickedNote);
-            var noteBelow = _context.WebNotes.FirstOrDefault(x => x.Id == idOfBelowNote);
-            int orderIndexToMoveTo = noteBelow.OrderIndex;
-
-            int temp = noteClickedOn.OrderIndex;
-
-            noteClickedOn.OrderIndex = orderIndexToMoveTo;
-            _context.Update(noteClickedOn);
-
-            noteBelow.OrderIndex = temp;
-            _context.Update(noteBelow);
-
-            _context.SaveChanges();
+            _webNoteService.MoveNoteDown(idOfClickedNote, idOfBelowNote);
             return Ok();
         }
 
@@ -187,10 +125,7 @@ namespace IdentityCoreProject.Controllers
         public FileResult DownloadNotes()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var myWebNotes = userId == null ? new List<WebNote>() : _context.WebNotes
-                .Where(n => n.UserId == userId)
-                .OrderBy(x => x.OrderIndex)
-                .ToList();
+            var myWebNotes = _webNoteService.GetUsersNotes(userId);
 
             var trimmedWebNotes = myWebNotes.Select(note => new CsvNotes
             {
@@ -209,7 +144,21 @@ namespace IdentityCoreProject.Controllers
             return File(stream, "text/csv", "votes.csv");
         }
 
-            public IActionResult Error()
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult Error()
         {
             return View();
         }

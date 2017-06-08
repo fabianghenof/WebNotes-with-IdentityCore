@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<WebNote>
+
+<!--Main Jumbotron-->
+<div class="jumbotron" id="jumbotron">
+    <h1><i class="glyphicon glyphicon-edit" id="webnotes-icon"></i>WebNotes</h1>
+    <p>Quickly create notes and organize your life using this simple tool.</p>
+
+    <button class="btn btn-primary btn-lg" id="add-note-btn">
+        Add Note <span class="caret"></span>
+    </button>
+
+    <!--New Note Form-->
+    <div class="hidden" id="new-note-form">
+        <form class="formz-group form-group-lg">
+            <input type="text" class="form-control" placeholder="Title" id="note-title">
+            <textarea class="form-control" rows="3" placeholder="Content" id="note-content"></textarea>
+
+            <button type="button" class="btn btn-default pull-right" id="submit-note-btn">
+                <span class="text-success">Create Note</span>
+                <i class="glyphicon glyphicon-ok text-success"></i>
+            </button>
+
+            <!--Color Picker dropdown button-->
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="color-button">
+                    <span id="color-button-text">Green</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li id="selected-green"><a href="#"><span class="text-success" id="selected-green">Green</span></a></li>
+                    <li id="selected-blue"><a href="#"><span class="text-info" id="selected-blue">Blue</span></a></li>
+                    <li id="selected-orange"><a href="#"><span class="text-warning" id="selected-orange">Orange</span></a></li>
+                    <li id="selected-red"><a href="#"><span class="text-danger" id="selected-red">Red</span></a></li>
+                </ul>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+
+<!--NOTES Div-->
+<div id="notes-div">
+
+    <!--Note template-->
+    <script type="text/html" id="to-do-item-template">
+        <div class="panel" id="note-panel" data-orderIndex="0">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
+                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
+                    <span class="note-title">Note Title</span>
+                    <input type="text" class="form-control hidden" id="edit-title-input" />
+                    <a class="delete-note-button">
+                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
+                    </a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <span id="panel-note-content">Note content</span>
+                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
+            </div>
+        </div>
+    </script>
+
+    @foreach (var note in Model)
+    {
+        <div class="panel @note.Color" id="note-panel" data-orderIndex="@note.OrderIndex" data-id="@note.Id">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
+                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
+                    <span class="note-title">@note.Title</span>
+                    <input type="text" class="form-control hidden" id="edit-title-input" />
+
+                    <a class="delete-note-button" data-id="@note.Id">
+                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
+                    </a>
+
+                </h3>
+            </div>
+            <div class="panel-body" data-id="@note.Id">
+                <span id="panel-note-content">@note.Content</span>
+                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
+            </div>
+        </div>
+    }
+
+</div>

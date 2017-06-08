@@ -10,7 +10,15 @@
 
   <PropertyGroup>
     <UserSecretsId>aspnet-IdentityCoreProject-953eb07f-8a06-4134-954f-a0e9cc1c743a</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/f81c71e9-373a-40a1-b87e-8e2a13d66380/resourcegroups/WebNotesResourceGroup/providers/microsoft.insights/components/IdentityCoreProject20170608025915</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/f81c71e9-373a-40a1-b87e-8e2a13d66380/resourcegroups/WebNotesResourceGroup/providers/microsoft.insights/components/IdentityCoreProject20170608025915</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608025915 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608033740 - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608035058 - Web Deploy.pubxml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="wwwroot\css\site.css" />
@@ -21,6 +29,7 @@
     <Content Include="wwwroot\lib\toastr\toastr.js.map" />
     <Content Include="wwwroot\lib\toastr\toastr.min.css" />
     <Content Include="wwwroot\lib\toastr\toastr.min.js" />
+    <Content Include="wwwroot\lib\WebNotesErrors.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="2.16.3" />
@@ -37,6 +46,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
@@ -46,6 +56,13 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>

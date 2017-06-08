@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using IdentityCoreProject.Data;
 using IdentityCoreProject.Models;
 using IdentityCoreProject.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace IdentityCoreProject
 {
@@ -47,11 +49,15 @@ namespace IdentityCoreProject
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilterAttribute));
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IWebNoteService, WebNoteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
