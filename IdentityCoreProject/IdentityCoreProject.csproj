@@ -14,6 +14,10 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/f81c71e9-373a-40a1-b87e-8e2a13d66380/resourcegroups/WebNotesResourceGroup/providers/microsoft.insights/components/IdentityCoreProject20170608025915</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Prefer32Bit>True</Prefer32Bit>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608025915 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608033740 - Web Deploy.pubxml" />
