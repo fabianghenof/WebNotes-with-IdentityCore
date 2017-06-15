@@ -59,6 +59,9 @@
           "lib/netstandard1.3/CsvHelper.dll": {}
         }
       },
+      "knockoutjs/3.4.2": {
+        "type": "package"
+      },
       "Libuv/1.9.1": {
         "type": "package",
         "dependencies": {
@@ -4608,6 +4611,17 @@
         "lib/netstandard1.3/CsvHelper.xml",
         "lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.dll",
         "lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.xml"
+      ]
+    },
+    "knockoutjs/3.4.2": {
+      "sha512": "MYGjgXxvg2tBzxuclV51Zs+p8iP+iWs+y6uQdMZRlHP2B5HQuXOd+3eT1lcV6UPshHE+1nr1bMgu1YTC44frOQ==",
+      "type": "package",
+      "path": "knockoutjs/3.4.2",
+      "files": [
+        "Content/Scripts/knockout-3.4.2.debug.js",
+        "Content/Scripts/knockout-3.4.2.js",
+        "knockoutjs.3.4.2.nupkg.sha512",
+        "knockoutjs.nuspec"
       ]
     },
     "Libuv/1.9.1": {
@@ -11561,6 +11575,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 1.1.1",
       "RazorLight.MVC >= 1.0.4",
       "automapper >= 6.0.2",
+      "knockoutjs >= 3.4.2",
       "mailkit >= 1.16.1",
       "microsoft.azure.keyvault >= 2.0.6",
       "razorlight >= 1.1.0"
@@ -11584,6 +11599,12 @@
         "netcoreapp1.1": {
           "projectReferences": {}
         }
+      }
+    },
+    "dependencies": {
+      "knockoutjs": {
+        "target": "Package",
+        "version": "[3.4.2, )"
       }
     },
     "frameworks": {

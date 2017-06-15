@@ -47,14 +47,14 @@
 
     <!--Note template-->
     <script type="text/html" id="to-do-item-template">
-        <div class="form-group form-inline hidden" id="email-note-form">
+        <div class="form-group form-inline" id="email-note-form" data-bind="visible: emailVisible">
             <input type="email" class="form-control" placeholder="Email">
             <button type="submit" class="btn btn-default">Send</button>
         </div>
         <div class="panel" id="note-panel" data-orderIndex="0">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol"></i>
+                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol" data-bind="click: showEmailForm"></i>
                     <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
                     <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
                     <span class="note-title">Note Title</span>
@@ -73,7 +73,7 @@
 
     @foreach (var note in Model)
     {
-        <div class="form-group form-inline hidden">
+        <div class="form-group form-inline"  data-bind="visible: emailVisible">
             <input type="email" class="form-control" id="email-input" placeholder="Email">
             <button type="submit" class="btn btn-default" id="email-note-button" data-id="@note.Id">Send</button>
         </div>
@@ -81,7 +81,7 @@
         <div class="panel @note.Color" id="note-panel" data-orderIndex="@note.OrderIndex" data-id="@note.Id">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol" data-bind="click: toggleEmailForm"></i>
+                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol" data-bind="click: showEmailForm"></i>
                     <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
                     <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
                     <span class="note-title">@note.Title</span>

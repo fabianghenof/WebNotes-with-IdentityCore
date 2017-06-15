@@ -4,10 +4,13 @@ var $colorButton = $('#color-button');
 var $colorButtonText = $('#color-button-text');
 var panelColorClass = 'panel-success';
 
-//KNOCKOUT VIEW MODEL
+
 function WebNotesViewModel() {
+    //Properties
     self = this;
-    self.submitNote= function() {
+    self.emailVisible = ko.observable(false);
+    //Functions
+    self.submitNote = function () {
         var newNote = new Note();
 
         if (!$noteContent.val()) {
@@ -32,7 +35,7 @@ function WebNotesViewModel() {
             //location.reload();
         }
     }
-    self.makeNotePanel = function(noteToMake) {
+    self.makeNotePanel = function (noteToMake) {
         //generate html for note panel
         var $noteHtmlTemplate = $($('#to-do-item-template').html());
 
@@ -46,10 +49,10 @@ function WebNotesViewModel() {
 
         $('#notes-div').prepend($noteHtmlTemplate);
     }
-    self.toggleAddNoteForm = function() {
+    self.toggleAddNoteForm = function () {
         $('#new-note-form').toggleClass('hidden');
     }
-    self.noteColor = function(color) {
+    self.noteColor = function (color) {
         switch (color) {
             case 'green':
                 $colorButtonText.text('Green');
@@ -77,9 +80,20 @@ function WebNotesViewModel() {
                 break;
         }
     }
+    self.showEmailForm = function () {
+        switch (self.emailVisible()) {
+            case false:
+                self.emailVisible(true);
+                break;
 
-}
+            case true:
+                self.emailVisible(false);
+                break;
+        }
+    }
+    }
 
+//Knockout apply bindings
 ko.applyBindings(new WebNotesViewModel());
     
 

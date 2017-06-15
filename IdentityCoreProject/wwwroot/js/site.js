@@ -117,10 +117,6 @@ $(document).ready(function () {
         evt.stopPropagation();
         moveNoteDown($(this));
     });
-    $('#notes-div').on('click', '#email-note-symbol', function (evt) {
-        evt.stopPropagation();
-        toggleEmailForm($(this));
-    });
     $('#notes-div').on('click', '#email-note-button', function (evt) {
         evt.stopPropagation();
         sendEmail($(this));
