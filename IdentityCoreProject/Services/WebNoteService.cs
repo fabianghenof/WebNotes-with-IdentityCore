@@ -1,10 +1,16 @@
-﻿using IdentityCoreProject.Data;
+﻿using AutoMapper;
+using CsvHelper;
+using IdentityCoreProject.Data;
 using IdentityCoreProject.Models;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using MimeKit;
+using RazorLight;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 
@@ -14,11 +20,20 @@ namespace IdentityCoreProject.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public WebNoteService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public WebNoteService
+            (ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager,
+            IMapper mapper,
+            IHostingEnvironment hostingEnvironment)
+            
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public List<WebNote> GetUsersNotes(string userId)
@@ -109,7 +124,62 @@ namespace IdentityCoreProject.Services
             _context.SaveChanges();
         }
 
+        public MemoryStream DownloadNotes(string userId, List<WebNote> myWebNotes)
+        {
+            var trimmedWebNotes = new List<CsvNote>();
 
+            for (int i = 0; i < myWebNotes.Count(); i++)
+            {
+                var noteToAdd = _mapper.Map<CsvNote>(myWebNotes[i]);
+                trimmedWebNotes.Add(noteToAdd);
+            }
+
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            var csv = new CsvWriter(writer);
+            csv.WriteRecords(trimmedWebNotes);
+            writer.Flush();
+            stream.Position = 0;
+
+            return stream;
+        }
+
+        void IWebNoteService.SendEmail(WebNote note, string loggedInEmail, string email, int id)
+        {
+            var engine = EngineFactory.CreatePhysical(Path.Combine(_hostingEnvironment.ContentRootPath, "Templates", "Email"));
+            var model = new
+            {
+                Sender = loggedInEmail,
+                Title = note.Title,
+                Color = note.Color,
+                Content = note.Content,
+            };
+            string result = engine.Parse("basic.cshtml", model);
+
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Eu", "fabian.ghenof@xconta.ro"));
+            message.To.Add(new MailboxAddress("Tu", email));
+            message.Subject = "WebNote from " + loggedInEmail;
+            message.Body = new TextPart("html")
+            {
+                Text = result
+            };
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.mailgun.org", 587, false);
+                // Note: since we don't have an OAuth2 token, disable // the XOAUTH2 authentication mechanism
+                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate(
+                    Environment.GetEnvironmentVariable("emailClientUsername"),
+                    Environment.GetEnvironmentVariable("emailClientPassword"));
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            //
+        }
 
     }
 }

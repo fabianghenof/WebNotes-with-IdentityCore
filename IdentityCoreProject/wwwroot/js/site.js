@@ -6,56 +6,10 @@ $(document).ready(function () {
     var $colorButton = $('#color-button');
     var $colorButtonText = $('#color-button-text');
     var panelColorClass = 'panel-success';
-    var justDeletedNote = localStorage.getItem("justDeletedNote");
 
-    console.log(justDeletedNote);
-
-
-    function toggleAddNoteForm() {
-        $('#new-note-form').toggleClass('hidden');
+    function toggleEmailForm($this) {
+        $this.closest('#note-panel').prev().toggleClass('hidden');
     }
-
-    function submitNote() {
-        var newNote = new Note();
-
-        if (!$noteContent.val()) {
-            $noteContent.addClass('alert-danger');
-            toastr.warning("WebNote content empty!");
-        }
-        else {
-            if (!$noteTitle.val()) {
-                $noteTitle.val('WebNote');
-            }
-            $noteContent.removeClass('alert-danger');
-            newNote.title = $noteTitle.val();
-            newNote.content = $noteContent.val();
-            newNote.color = panelColorClass;
-            $noteTitle.val('');
-            $noteContent.val('');
-            $.post("saveNote", newNote).then(function (response) {
-                newNote.id = response.id;
-                makeNotePanel(newNote);
-                toastr.success("WebNote added!");
-            });
-            //location.reload();
-        }
-    }
-
-    function makeNotePanel(noteToMake) {
-        //generate html for note panel
-        var $noteHtmlTemplate = $($('#to-do-item-template').html());
-
-        $noteHtmlTemplate.find('.note-title').text(noteToMake.title);
-        $noteHtmlTemplate.find('#panel-note-content').text(noteToMake.content);
-        $noteHtmlTemplate.find('.delete-note-button').data('id', noteToMake.id);
-        $noteHtmlTemplate.find('#panel-note-content').data('id', noteToMake.id);
-        $noteHtmlTemplate.find('#note-panel').data('id', noteToMake.id);
-        $noteHtmlTemplate.find('#note-panel').data('orderIndex', noteToMake.orderIndex);
-        $noteHtmlTemplate.addClass(panelColorClass);
-
-        $('#notes-div').prepend($noteHtmlTemplate);
-    }
-
     function deleteNote($this) {
         event.preventDefault();
 
@@ -70,39 +24,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-
-    function noteColor(color) {
-        switch (color) {
-            case 'green':
-                $colorButtonText.text('Green');
-                $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                $colorButton.addClass('btn-success');
-                panelColorClass = "panel-success";
-                break;
-            case 'red':
-                $colorButtonText.text('Red');
-                $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                $colorButton.addClass('btn-danger');
-                panelColorClass = "panel-danger";
-                break;
-            case 'orange':
-                $colorButtonText.text('Orange');
-                $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                $colorButton.addClass('btn-warning');
-                panelColorClass = "panel-warning";
-                break;
-            case 'blue':
-                $colorButtonText.text('Blue');
-                $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                $colorButton.addClass('btn-info');
-                panelColorClass = "panel-info";
-                break;
-        }
-    }
-
-
-    //edit Note Title
+    }  
     function editTitle($this) {
         var title = $this.find('.note-title').text();
         $this.find('.note-title').addClass('hidden');
@@ -125,9 +47,7 @@ $(document).ready(function () {
         $.post('updateNoteTitle', { id: idToModifiy, title: newTitle }).then(function () {
             toastr.success('WebNote title modified!');
         });
-    }
-
-    //edit Note Content                                                                                      
+    }                                                                                     
     function editContent($this) {
         var content = $this.find('#panel-note-content').text();
         $this.find('#panel-note-content').addClass('hidden');
@@ -151,8 +71,6 @@ $(document).ready(function () {
             toastr.success('WebNote content modified!');
         });
     }
-
-
     function moveNoteUp($this) {
         var idOfClickedNote = $this.closest('#note-panel').data('id');
         var idOfAboveNote = $this.closest('#note-panel').prev().data('id');
@@ -160,7 +78,6 @@ $(document).ready(function () {
             location.reload();
         });
     }
-
     function moveNoteDown($this) {
         var idOfClickedNote = $this.closest('#note-panel').data('id');
         var idOfBelowNote = $this.closest('#note-panel').next().data('id');
@@ -168,36 +85,18 @@ $(document).ready(function () {
             location.reload();
         });
     }
-
-    function sendEmail() {
-        var emailToSendTo = $('#email-input').val();
-        $.post('sendEmail', { email: emailToSendTo });
+    function sendEmail($this) {
+        var emailToSendTo = $this.prev().val();
+        var idOfNoteToSend = $this.data('id');
+        $.post('/sendEmail', { email: emailToSendTo, id: idOfNoteToSend }).then(
+            location.reload());
     }
 
-    $('#add-note-btn').on('click', toggleAddNoteForm);
-    $('#submit-note-btn').on('click', submitNote);
     $noteContent.on('keypress', function () { $noteContent.removeClass('alert-danger'); });
-
     $('#notes-div').on('click', '#delete-note-symbol', function (evt) {
         evt.stopPropagation();
         deleteNote($(this));
     });
-
-    //Note color picker dropdown options
-    $('#selected-green').on('click', function () {
-        noteColor('green');
-    });
-    $('#selected-blue').on('click', function () {
-        noteColor('blue');
-    });
-    $('#selected-orange').on('click', function () {
-        noteColor('orange');
-    });
-    $('#selected-red').on('click', function () {
-        noteColor('red');
-    });
-
-
     $('#notes-div').on('click', '.panel-heading', function () {
         editTitle($(this));
     });
@@ -210,18 +109,21 @@ $(document).ready(function () {
     $('#notes-div').on('focusout', '.panel-body', function () {
         editContentFinished($(this));
     });
-
     $('#notes-div').on('click', '#move-up-symbol', function (evt) {
         evt.stopPropagation();
         moveNoteUp($(this));
     });
-
     $('#notes-div').on('click', '#move-down-symbol', function (evt) {
         evt.stopPropagation();
         moveNoteDown($(this));
     });
-
-    $('#download-notes').on('click', downloadNotes);
-
+    $('#notes-div').on('click', '#email-note-symbol', function (evt) {
+        evt.stopPropagation();
+        toggleEmailForm($(this));
+    });
+    $('#notes-div').on('click', '#email-note-button', function (evt) {
+        evt.stopPropagation();
+        sendEmail($(this));
+    });
 });
 

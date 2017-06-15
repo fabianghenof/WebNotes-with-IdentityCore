@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IdentityCoreProject.Models;
+using System.IO;
 
 namespace IdentityCoreProject.Services
 {
@@ -12,5 +13,7 @@ namespace IdentityCoreProject.Services
         void MoveNoteUp(int idOfClickedNote, int idOfAboveNote);
         void UpdateContent(int id, string content);
         void UpdateTitle(int id, string title);
+        MemoryStream DownloadNotes(string userId, List<WebNote> notes);
+        void SendEmail(WebNote note, string loggedInEmail, string email, int id);
     }
 }

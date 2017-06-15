@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IdentityCoreProject.Models
 {
-    public class CsvNotes
+    public class CsvNote
     {
         public string Id { get; set; }
         public string Title { get; set; }

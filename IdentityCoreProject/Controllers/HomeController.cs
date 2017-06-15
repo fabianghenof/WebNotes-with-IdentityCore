@@ -6,32 +6,27 @@ using Microsoft.AspNetCore.Hosting;
 using IdentityCoreProject.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using CsvHelper;
 using IdentityCoreProject.Services;
 using Microsoft.Extensions.Logging;
+using AutoMapper;
+using RazorLight;
 
 namespace IdentityCoreProject.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebNoteService _webNoteService;
-        private readonly ILogger _logger;
 
-
-        public HomeController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager, IWebNoteService webNoteService, ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            IWebNoteService webNoteService)
         {
             _context = context;
-            _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
             _webNoteService = webNoteService;
-            _logger = logger;
         }
 
         public IActionResult Index()
@@ -86,38 +81,11 @@ namespace IdentityCoreProject.Controllers
         }
 
         [HttpPost("sendEmail")]
-        public IActionResult SendEmail(string email)
+        public IActionResult SendEmail(string email, int id)
         {
-            //MAIL TEST
-            //var engine = EngineFactory.CreatePhysical(System.IO.Path.Combine(_hostingEnvironment.ContentRootPath, "Templates", "Email"));
-            //var model = new
-            //{
-            //    Name = "John Doe",
-            //    Title = "RazorLight"
-            //};
-            //string result = engine.Parse("basic.cshtml", model);
-
-            //var message = new MimeMessage();
-            //message.From.Add(new MailboxAddress("Eu", "NEIMPLEMENTAT"));
-            //message.To.Add(new MailboxAddress("Tu", email));
-            //message.Subject = email;
-            //message.Body = new TextPart("html")
-            //{
-            //    Text = result
-            //};
-
-            //using (var client = new SmtpClient())
-            //{
-            //    client.Connect("smtp.mailgun.org", 587, false);
-            //    // Note: since we don't have an OAuth2 token, disable // the XOAUTH2 authentication mechanism
-            //    client.AuthenticationMechanisms.Remove("XOAUTH2");
-            //    // Note: only needed if the SMTP server requires authentication
-            //    client.Authenticate("NEIMPLEMENTAT", "NEIMPLEMENTAT");
-
-            //    client.Send(message);
-            //    client.Disconnect(true);
-            //}
-            //
+            string loggedInEmail = User.Identity.Name;
+            var note = _context.WebNotes.FirstOrDefault(x => x.Id == id);
+            _webNoteService.SendEmail(note, loggedInEmail, email, id); 
             return Ok();
         }
 
@@ -126,41 +94,9 @@ namespace IdentityCoreProject.Controllers
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var myWebNotes = _webNoteService.GetUsersNotes(userId);
-
-            var trimmedWebNotes = myWebNotes.Select(note => new CsvNotes
-            {
-                Id = note.Id.ToString(),
-                Title = note.Title,
-                Content = note.Content
-            }).ToList();
-   
-            var stream = new MemoryStream();
-            var writer = new StreamWriter(stream);
-            var csv = new CsvWriter(writer);
-            csv.WriteRecords(trimmedWebNotes);
-            writer.Flush();
-            stream.Position = 0;
+            var stream  = _webNoteService.DownloadNotes(userId, myWebNotes);
 
             return File(stream, "text/csv", "votes.csv");
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
         }
     }
 }

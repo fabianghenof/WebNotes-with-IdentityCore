@@ -12,8 +12,11 @@ using Microsoft.Extensions.Logging;
 using IdentityCoreProject.Data;
 using IdentityCoreProject.Models;
 using IdentityCoreProject.Services;
+using RazorLight;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using RazorLight.MVC;
+using AutoMapper;
 
 namespace IdentityCoreProject
 {
@@ -31,8 +34,11 @@ namespace IdentityCoreProject
                 // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
             }
+            else
+            {
+                builder.AddEnvironmentVariables("APPSETTING_");
+            }
 
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -54,10 +60,24 @@ namespace IdentityCoreProject
                 options.Filters.Add(typeof(CustomExceptionFilterAttribute));
             });
 
+            services.AddAutoMapper();
+
+            services.AddRazorLight("/Views");
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IWebNoteService, WebNoteService>();
+
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<WebNote, CsvNote>();
+                //cfg.CreateMap<CsvNote, WebNote>();
+            });
+
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+            config.AssertConfigurationIsValid();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,8 +101,22 @@ namespace IdentityCoreProject
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
+            if (env.IsDevelopment())
+            {
+                app.UseFacebookAuthentication(new FacebookOptions()
+                {
+                    AppId = Configuration["Authentication:Facebook:AppId"],
+                    AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+                });
+            }
+            else
+            {
+                app.UseFacebookAuthentication(new FacebookOptions()
+                {
+                    AppId = Environment.GetEnvironmentVariable("fbAppId"),
+                    AppSecret = Environment.GetEnvironmentVariable("fbAppSecret")
+                });
+            }
 
             app.UseMvc(routes =>
             {

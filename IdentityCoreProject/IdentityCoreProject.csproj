@@ -18,6 +18,10 @@
     <Prefer32Bit>True</Prefer32Bit>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Released|AnyCPU'">
+    <Prefer32Bit>True</Prefer32Bit>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608025915 - Web Deploy.pubxml" />
     <None Remove="Properties\PublishProfiles\IdentityCoreProject20170608033740 - Web Deploy.pubxml" />
@@ -28,6 +32,8 @@
     <Content Include="wwwroot\css\site.css" />
     <Content Include="wwwroot\css\site.min.css" />
     <Content Include="wwwroot\js\Note.js" />
+    <Content Include="wwwroot\js\WebNotesVM.js" />
+    <Content Include="wwwroot\lib\knockout\knockout-3.4.2.js" />
     <Content Include="wwwroot\lib\toastr\toastr.css" />
     <Content Include="wwwroot\lib\toastr\toastr.js" />
     <Content Include="wwwroot\lib\toastr\toastr.js.map" />
@@ -36,7 +42,10 @@
     <Content Include="wwwroot\lib\WebNotesErrors.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="automapper" Version="6.0.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
     <PackageReference Include="CsvHelper" Version="2.16.3" />
+    <PackageReference Include="mailkit" Version="1.16.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
@@ -45,6 +54,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="microsoft.azure.keyvault" Version="2.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" PrivateAssets="All" />
@@ -54,6 +64,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
+    <PackageReference Include="razorlight" Version="1.1.0" />
+    <PackageReference Include="RazorLight.MVC" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.1" />
