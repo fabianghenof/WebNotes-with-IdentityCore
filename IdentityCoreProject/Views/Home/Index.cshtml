@@ -54,8 +54,18 @@
             <td data-bind="text: content"></td>
             <td>
                 <button class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
-                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope"></i></button>
-                <button class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+                <button class="btn btn-default"  data-bind="click: $parents[1].showEmailForm">
+                <i class="glyphicon glyphicon-envelope"></i>
+                </button>
+                <button class="btn btn-danger"  data-bind="click: $parents[1].removeNote.bind(this, id)">
+                                                                <i class="glyphicon glyphicon-remove"></i>
+                                                                </button>
+                <form class="form-group form-inline" data-bind="visible: $parents[1].emailVisible">
+                    <input type="text" class="form-control input-sm" placeholder="Email"/>
+                    <button class="btn btn-default btn-sm form-control">
+                        Send
+                    </button>
+                </form> 
             </td> 
             </tr>
         </tbody>

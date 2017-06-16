@@ -93,16 +93,13 @@
                     break;
             }
         }
-        self.removeNote = function () {
+        self.removeNote = function (idToDelete) {
+            //alert('test');
             event.preventDefault();
             //delete the note after a fade-out animation
-            var idToDelete = $(this).data('id');
-
             $.post("deleteNote", { id: idToDelete }).then(function () {
-                $this.closest('#note-panel').fadeOut('fast', function () {
-                    $this.closest('#note-panel').remove();
-                    toastr.error('WebNote ' + idToDelete + ' deleted');
-                });
+                toastr.error('WebNote ' + idToDelete + ' deleted');
+                self.getWebNotesData();
             });
         }
 
