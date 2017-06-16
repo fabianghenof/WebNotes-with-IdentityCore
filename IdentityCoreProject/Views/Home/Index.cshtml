@@ -46,58 +46,20 @@
 <div id="notes-div">
 
     <!--Note template-->
-    <script type="text/html" id="to-do-item-template">
-        <div class="form-group form-inline" id="email-note-form" data-bind="visible: emailVisible">
-            <input type="email" class="form-control" placeholder="Email">
-            <button type="submit" class="btn btn-default">Send</button>
-        </div>
-        <div class="panel" id="note-panel" data-orderIndex="0">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol" data-bind="click: showEmailForm"></i>
-                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
-                    <span class="note-title">Note Title</span>
-                    <input type="text" class="form-control hidden" id="edit-title-input" />
-                    <a class="delete-note-button">
-                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
-                    </a>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <span id="panel-note-content">Note content</span>
-                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
-            </div>
-        </div>
-    </script>
+    <table class="table table-bordered" data-bind="with: webNotesData">
+        <thead><tr> <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+        <tbody data-bind="foreach: notes">
+            <tr>
+            <td data-bind="text: title"></td>
+            <td data-bind="text: content"></td>
+            <td>
+                <button class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
+                <button class="btn btn-default"><i class="glyphicon glyphicon-envelope"></i></button>
+                <button class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+            </td> 
+            </tr>
+        </tbody>
+    </table>
 
-    @foreach (var note in Model)
-    {
-        <div class="form-group form-inline"  data-bind="visible: emailVisible">
-            <input type="email" class="form-control" id="email-input" placeholder="Email">
-            <button type="submit" class="btn btn-default" id="email-note-button" data-id="@note.Id">Send</button>
-        </div>
-
-        <div class="panel @note.Color" id="note-panel" data-orderIndex="@note.OrderIndex" data-id="@note.Id">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol" data-bind="click: showEmailForm"></i>
-                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
-                    <span class="note-title">@note.Title</span>
-                    <input type="text" class="form-control hidden" id="edit-title-input" />
-
-                    <a class="delete-note-button" data-id="@note.Id">
-                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
-                    </a>
-
-                </h3>
-            </div>
-            <div class="panel-body" data-id="@note.Id">
-                <span id="panel-note-content">@note.Content</span>
-                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
-            </div>
-        </div>
-
-    }
+   
 </div>

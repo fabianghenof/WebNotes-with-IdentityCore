@@ -32,9 +32,16 @@ namespace IdentityCoreProject.Controllers
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-
             var notes = _webNoteService.GetUsersNotes(userId);
                 return View(notes);
+        }
+
+        [HttpGet("getWebNotes")]
+        public IActionResult GetWebNotes()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var webnotes = _webNoteService.GetUsersNotes(userId);
+                return Json(new { notes = webnotes });
         }
 
         [HttpPost("updateNoteTitle")]
