@@ -10,6 +10,9 @@ using IdentityCoreProject.Services;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using RazorLight;
+using System;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace IdentityCoreProject.Controllers
 {
@@ -88,12 +91,18 @@ namespace IdentityCoreProject.Controllers
         }
 
         [HttpPost("sendEmail")]
-        public IActionResult SendEmail(string email, int id)
+        public IActionResult SendEmail(string email, WebNote note)
         {
             string loggedInEmail = User.Identity.Name;
-            var note = _context.WebNotes.FirstOrDefault(x => x.Id == id);
-            _webNoteService.SendEmail(note, loggedInEmail, email, id); 
+            _webNoteService.SendEmail(note, loggedInEmail, email); 
             return Ok();
+        }
+
+        [HttpGet("getSingleWebNote")]
+        public IActionResult getSingleWebNote(int id)
+        {
+            WebNote webnote = _context.WebNotes.FirstOrDefault(x => x.Id == id);
+            return Json(webnote);
         }
 
         [HttpGet]

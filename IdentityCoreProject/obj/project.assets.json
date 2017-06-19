@@ -11601,18 +11601,16 @@
         }
       }
     },
-    "dependencies": {
-      "knockoutjs": {
-        "target": "Package",
-        "version": "[3.4.2, )"
-      }
-    },
     "frameworks": {
       "netcoreapp1.1": {
         "dependencies": {
           "mailkit": {
             "target": "Package",
             "version": "1.16.1"
+          },
+          "knockoutjs": {
+            "target": "Package",
+            "version": "3.4.2"
           },
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
             "target": "Package",

@@ -8,17 +8,17 @@
     <h1><i class="glyphicon glyphicon-edit" id="webnotes-icon"></i>WebNotes</h1>
     <p>Quickly create notes and organize your life using this simple tool.</p>
 
-    <button class="btn btn-primary btn-lg" id="add-note-btn">
+    <button class="btn btn-primary btn-lg" data-bind="click: toggleAddNoteForm">
         Add Note <span class="caret"></span>
     </button>
 
     <!--New Note Form-->
     <div class="hidden" id="new-note-form">
-        <form class="formz-group form-group-lg">
+        <form class="form-group form-group-lg"> 
             <input type="text" class="form-control" placeholder="Title" id="note-title">
             <textarea class="form-control" rows="3" placeholder="Content" id="note-content"></textarea>
 
-            <button type="button" class="btn btn-default pull-right" id="submit-note-btn">
+            <button type="button" class="btn btn-default pull-right" data-bind="click: submitNote" >
                 <span class="text-success">Create Note</span>
                 <i class="glyphicon glyphicon-ok text-success"></i>
             </button>
@@ -29,10 +29,10 @@
                     <span id="color-button-text">Green</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li id="selected-green"><a href="#"><span class="text-success" id="selected-green">Green</span></a></li>
-                    <li id="selected-blue"><a href="#"><span class="text-info" id="selected-blue">Blue</span></a></li>
-                    <li id="selected-orange"><a href="#"><span class="text-warning" id="selected-orange">Orange</span></a></li>
-                    <li id="selected-red"><a href="#"><span class="text-danger" id="selected-red">Red</span></a></li>
+                    <li data-bind="click: noteColor.bind(this, 'green')"><a href="#"><span class="text-success">Green</span></a></li>
+                    <li data-bind="click: noteColor.bind(this, 'blue')"><a href="#"><span class="text-info">Blue</span></a></li>
+                    <li data-bind="click: noteColor.bind(this, 'orange')"><a href="#"><span class="text-warning">Orange</span></a></li>
+                    <li data-bind="click: noteColor.bind(this, 'red')"><a href="#"><span class="text-danger">Red</span></a></li>
                 </ul>
             </div>
 
@@ -46,58 +46,41 @@
 <div id="notes-div">
 
     <!--Note template-->
-    <script type="text/html" id="to-do-item-template">
-        <div class="form-group form-inline hidden" id="email-note-form">
-            <input type="email" class="form-control" placeholder="Email">
-            <button type="submit" class="btn btn-default">Send</button>
-        </div>
-        <div class="panel" id="note-panel" data-orderIndex="0">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
-                    <span class="note-title">Note Title</span>
-                    <input type="text" class="form-control hidden" id="edit-title-input" />
-                    <a class="delete-note-button">
-                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
-                    </a>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <span id="panel-note-content">Note content</span>
-                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
-            </div>
-        </div>
-    </script>
+    <table class="table table-bordered" data-bind="with: webNotesData">
+        <thead><tr> <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+        <tbody data-bind="foreach: notes">
+            <tr>
+            <td data-bind="text: title"></td>
+            <td data-bind="text: content"></td>
+            <td>
+                <button class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
 
-    @foreach (var note in Model)
-    {
-        <div class="form-group form-inline hidden">
-            <input type="email" class="form-control" id="email-input" placeholder="Email">
-            <button type="submit" class="btn btn-default" id="email-note-button" data-id="@note.Id">Send</button>
-        </div>
+                <!--Email Modal-->
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal" data-bind="click: function () { $root.setNoteToEmail(id); }"><i class="glyphicon glyphicon-envelope"></i></button>
 
-        <div class="panel @note.Color" id="note-panel" data-orderIndex="@note.OrderIndex" data-id="@note.Id">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="glyphicon glyphicon-envelope" id="email-note-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-up" id="move-up-symbol"></i>
-                    <i class="glyphicon glyphicon-chevron-down" id="move-down-symbol"></i>
-                    <span class="note-title">@note.Title</span>
-                    <input type="text" class="form-control hidden" id="edit-title-input" />
+                <button class="btn btn-danger"  data-bind="click: $parents[1].removeNote.bind(this, id)">
+                                                                <i class="glyphicon glyphicon-remove"></i>
+                                                                </button>           
+                
+            </td> 
+            </tr>
+        </tbody>
+    </table>
 
-                    <a class="delete-note-button" data-id="@note.Id">
-                        <i class="glyphicon glyphicon-remove pull-right" id="delete-note-symbol"></i>
-                    </a>
+    <div class="modal fade email-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <h4 class="text-center">Email this note to someone?</h4>
+                <form class="form-group form-group-sm form-inline text-center">
+                    <input type="email" class="form-control input-sm" placeholder="Email" data-bind="value: emailToSendTo"/>
+                    <button type="button" class="btn btn-default form-control" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary form-control" data-bind="click: $root.emailNote">
+                        Send
+                    </button>
 
-                </h3>
-            </div>
-            <div class="panel-body" data-id="@note.Id">
-                <span id="panel-note-content">@note.Content</span>
-                <textarea class="form-control hidden" rows="3" id="edit-content-input"></textarea>
+                </form>
             </div>
         </div>
-
-    }
+    </div>
+   
 </div>

@@ -144,7 +144,7 @@ namespace IdentityCoreProject.Services
             return stream;
         }
 
-        void IWebNoteService.SendEmail(WebNote note, string loggedInEmail, string email, int id)
+        void IWebNoteService.SendEmail(WebNote note, string loggedInEmail, string email)
         {
             var engine = EngineFactory.CreatePhysical(Path.Combine(_hostingEnvironment.ContentRootPath, "Templates", "Email"));
             var model = new

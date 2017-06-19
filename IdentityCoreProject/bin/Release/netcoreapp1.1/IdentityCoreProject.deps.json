@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.1",
-    "signature": "49a8d7934dc2193519a19881ab00d76ed29aeb0d"
+    "signature": "1d64badaa7134d2d32220cdfd530d52003345e5e"
   },
   "compilationOptions": {
     "defines": [
@@ -45,6 +45,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.1.1",
           "RazorLight.MVC": "1.0.4",
           "AutoMapper": "6.0.2",
+          "knockoutjs": "3.4.2",
           "MailKit": "1.16.1",
           "Microsoft.Azure.KeyVault": "2.0.6",
           "RazorLight": "1.1.0"
@@ -110,6 +111,7 @@
           "lib/netstandard1.3/CsvHelper.dll": {}
         }
       },
+      "knockoutjs/3.4.2": {},
       "mailkit/1.16.1": {
         "dependencies": {
           "MimeKit": "1.16.1",
@@ -3877,6 +3879,13 @@
       "sha512": "sha512-RTxNM9Q6MDg3WpGorrK7E9eXsjGhtDLYx5dBuHol5kHDpu7kND2NveHDVCFQgGxowuDB57ettaOEn3EJqiJ1oQ==",
       "path": "csvhelper/2.16.3",
       "hashPath": "csvhelper.2.16.3.nupkg.sha512"
+    },
+    "knockoutjs/3.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-MYGjgXxvg2tBzxuclV51Zs+p8iP+iWs+y6uQdMZRlHP2B5HQuXOd+3eT1lcV6UPshHE+1nr1bMgu1YTC44frOQ==",
+      "path": "knockoutjs/3.4.2",
+      "hashPath": "knockoutjs.3.4.2.nupkg.sha512"
     },
     "mailkit/1.16.1": {
       "type": "package",

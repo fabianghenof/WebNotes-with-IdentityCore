@@ -14,7 +14,7 @@
 
     <!--New Note Form-->
     <div class="hidden" id="new-note-form">
-        <form class="formz-group form-group-lg">
+        <form class="form-group form-group-lg"> 
             <input type="text" class="form-control" placeholder="Title" id="note-title">
             <textarea class="form-control" rows="3" placeholder="Content" id="note-content"></textarea>
 
@@ -54,22 +54,33 @@
             <td data-bind="text: content"></td>
             <td>
                 <button class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button>
-                <button class="btn btn-default"  data-bind="click: $parents[1].showEmailForm">
-                <i class="glyphicon glyphicon-envelope"></i>
-                </button>
+
+                <!--Email Modal-->
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal" data-bind="click: function () { $root.setNoteToEmail(id); }"><i class="glyphicon glyphicon-envelope"></i></button>
+
                 <button class="btn btn-danger"  data-bind="click: $parents[1].removeNote.bind(this, id)">
                                                                 <i class="glyphicon glyphicon-remove"></i>
-                                                                </button>
-                <form class="form-group form-inline" data-bind="visible: $parents[1].emailVisible">
-                    <input type="text" class="form-control input-sm" placeholder="Email"/>
-                    <button class="btn btn-default btn-sm form-control">
-                        Send
-                    </button>
-                </form> 
+                                                                </button>           
+                
             </td> 
             </tr>
         </tbody>
     </table>
 
+    <div class="modal fade email-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <h4 class="text-center">Email this note to someone?</h4>
+                <form class="form-group form-group-sm form-inline text-center">
+                    <input type="email" class="form-control input-sm" placeholder="Email" data-bind="value: emailToSendTo"/>
+                    <button type="button" class="btn btn-default form-control" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary form-control" data-bind="click: $root.emailNote">
+                        Send
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
    
 </div>
