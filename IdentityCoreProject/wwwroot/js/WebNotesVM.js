@@ -14,11 +14,13 @@
         self.emailVisible = ko.observable(false);
         self.editVisible = ko.observable(false);
         self.textVisible = ko.observable(true);
-        self.emailToSendTo = ko.observable();
+        self.emailToSendTo = ko.observable().extend({ required: true }).extend({minLength: 3});
         self.webNotesData = ko.observable();
         self.noteToEmail = ko.observable();
         self.noteTitle = ko.observable();
         self.noteContent = ko.observable();
+
+
 
         //Functions
         self.getWebNotesData = function (webnotes) {
@@ -33,7 +35,7 @@
                 };
                 self.webNotesData(observableData);
             });
-        }
+        };
         self.submitNote = function () {
             var newNote = new Note();
 
@@ -68,15 +70,27 @@
         self.noteColor = function (color) {
             switch (color) {
                 case 'green':
+                    $colorButtonText.text('Green');
+                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
+                    $colorButton.addClass('btn-success');
                     noteColor = "#35d63d";
                     break;
-                case 'red':;
+                case 'red':
+                    $colorButtonText.text('Red');
+                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
+                    $colorButton.addClass('btn-danger');
                     noteColor = "#FF5858";
                     break;
                 case 'orange':
+                    $colorButtonText.text('Orange');
+                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
+                    $colorButton.addClass('btn-warning');
                     noteColor = "#FFA458";
                     break;
                 case 'blue':
+                    $colorButtonText.text('Blue');
+                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
+                    $colorButton.addClass('btn-info');
                     noteColor = "#53F1F1";
                     break;
             }
@@ -116,7 +130,7 @@
             self.noteTitle(note.title);
             self.noteContent(note.content);
             note.isEditable(!note.isEditable());
-        }
+        };
         self.saveNote = function (note) {
             $.post('updateNoteContent', { id: note.id, content: self.noteContent() }).then(function () {
                 $.post('updateNoteTitle', { id: note.id, title: self.noteTitle() }).then(function () {
@@ -124,10 +138,10 @@
                     toastr.success('WebNote successfully updated!');
                 });
             });
-            
 
 
-        }
+
+        };
 
         self.getWebNotesData();
     }
