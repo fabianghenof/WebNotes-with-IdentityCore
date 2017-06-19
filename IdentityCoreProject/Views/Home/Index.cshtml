@@ -47,12 +47,12 @@
 
     <!--Note template-->
     <table class="table table-bordered" data-bind="with: webNotesData">
-        <thead><tr> <th>Color</th> <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+        <thead><tr><th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
         <tbody data-bind="foreach: notes">
             <tr>
-            <td><input type="color" data-bind="attr: {value: color}"/></td>
+            <td data-bind="visible: !(isEditable())"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color, 'transform': 'translate(-35px, 5px)'}"></i>
+                <span data-bind="text: title"></span>
 
-            <td data-bind="visible: !(isEditable())"><span data-bind="text: title"></span>
             <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control"/></td>
 
             <td data-bind="visible: !(isEditable())"><span data-bind="text: content"></span></td>

@@ -4,7 +4,7 @@
     var $noteContent = $('#note-content');
     var $colorButton = $('#color-button');
     var $colorButtonText = $('#color-button-text');
-    var panelColorClass = '#55F855';
+    var panelColorClass = '#35d63d';
     var currentTitle = "";
     var currentContent = "";
 
@@ -48,7 +48,7 @@
                 $noteContent.removeClass('alert-danger');
                 newNote.title = $noteTitle.val();
                 newNote.content = $noteContent.val();
-                newNote.color = panelColorClass;
+                newNote.color = noteColor;
                 $noteTitle.val('');
                 $noteContent.val('');
                 $.post("saveNote", newNote).then(function (response) {
@@ -68,7 +68,7 @@
         self.noteColor = function (color) {
             switch (color) {
                 case 'green':
-                    panelColorClass = "#55F855";
+                    panelColorClass = "#35d63d";
                     break;
                 case 'red':;
                     panelColorClass = "#FF5858";

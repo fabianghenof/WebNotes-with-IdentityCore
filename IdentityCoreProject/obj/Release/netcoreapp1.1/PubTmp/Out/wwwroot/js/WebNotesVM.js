@@ -4,21 +4,36 @@
     var $noteContent = $('#note-content');
     var $colorButton = $('#color-button');
     var $colorButtonText = $('#color-button-text');
-    var panelColorClass = 'panel-success';
+    var panelColorClass = '#35d63d';
+    var currentTitle = "";
+    var currentContent = "";
 
     function WebNotesViewModel() {
         //Properties
         var self = this;
         self.emailVisible = ko.observable(false);
+        self.editVisible = ko.observable(false);
+        self.textVisible = ko.observable(true);
         self.emailToSendTo = ko.observable();
         self.webNotesData = ko.observable();
         self.noteToEmail = ko.observable();
+        self.noteTitle = ko.observable();
+        self.noteContent = ko.observable();
 
         //Functions
-        self.getWebNotesData = function (webnotes)
-        {
-            $.get('getWebNotes', { webnotes: webnotes }, self.webNotesData);
-        };
+        self.getWebNotesData = function (webnotes) {
+            $.get('getWebNotes', { webnotes: webnotes }, function (data) {
+                console.log(data);
+                var observableData = {
+                    notes: ko.observableArray(data.notes.map(function (note) {
+                        note.isEditable = ko.observable(false);
+                        console.log(note);
+                        return note;
+                    }))
+                };
+                self.webNotesData(observableData);
+            });
+        }
         self.submitNote = function () {
             var newNote = new Note();
 
@@ -33,7 +48,7 @@
                 $noteContent.removeClass('alert-danger');
                 newNote.title = $noteTitle.val();
                 newNote.content = $noteContent.val();
-                newNote.color = panelColorClass;
+                newNote.color = noteColor;
                 $noteTitle.val('');
                 $noteContent.val('');
                 $.post("saveNote", newNote).then(function (response) {
@@ -53,28 +68,16 @@
         self.noteColor = function (color) {
             switch (color) {
                 case 'green':
-                    $colorButtonText.text('Green');
-                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                    $colorButton.addClass('btn-success');
-                    panelColorClass = "panel-success";
+                    panelColorClass = "#35d63d";
                     break;
-                case 'red':
-                    $colorButtonText.text('Red');
-                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                    $colorButton.addClass('btn-danger');
-                    panelColorClass = "panel-danger";
+                case 'red':;
+                    panelColorClass = "#FF5858";
                     break;
                 case 'orange':
-                    $colorButtonText.text('Orange');
-                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                    $colorButton.addClass('btn-warning');
-                    panelColorClass = "panel-warning";
+                    panelColorClass = "#FFA458";
                     break;
                 case 'blue':
-                    $colorButtonText.text('Blue');
-                    $colorButton.removeClass('btn-success btn-info btn-warning btn-danger');
-                    $colorButton.addClass('btn-info');
-                    panelColorClass = "panel-info";
+                    panelColorClass = "#53F1F1";
                     break;
             }
         };
@@ -106,6 +109,25 @@
                 location.reload()
             );
         };
+        self.EditNote = function (note) {
+            console.log(this);
+            currentTitle = self.noteTitle();
+            currentContent = self.noteContent();
+            self.noteTitle(note.title);
+            self.noteContent(note.content);
+            note.isEditable(!note.isEditable());
+        }
+        self.saveNote = function (note) {
+            $.post('updateNoteContent', { id: note.id, content: self.noteContent() }).then(function () {
+                $.post('updateNoteTitle', { id: note.id, title: self.noteTitle() }).then(function () {
+                    self.getWebNotesData();
+                    toastr.success('WebNote successfully updated!');
+                });
+            });
+            
+
+
+        }
 
         self.getWebNotesData();
     }
