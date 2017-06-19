@@ -4,7 +4,7 @@
     var $noteContent = $('#note-content');
     var $colorButton = $('#color-button');
     var $colorButtonText = $('#color-button-text');
-    var panelColorClass = '#35d63d';
+    var noteColor = '#35d63d';
     var currentTitle = "";
     var currentContent = "";
 
@@ -68,16 +68,16 @@
         self.noteColor = function (color) {
             switch (color) {
                 case 'green':
-                    panelColorClass = "#35d63d";
+                    noteColor = "#35d63d";
                     break;
                 case 'red':;
-                    panelColorClass = "#FF5858";
+                    noteColor = "#FF5858";
                     break;
                 case 'orange':
-                    panelColorClass = "#FFA458";
+                    noteColor = "#FFA458";
                     break;
                 case 'blue':
-                    panelColorClass = "#53F1F1";
+                    noteColor = "#53F1F1";
                     break;
             }
         };
