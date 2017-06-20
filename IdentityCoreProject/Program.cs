@@ -18,7 +18,6 @@ namespace IdentityCoreProject
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .CaptureStartupErrors(true)
-                .UseApplicationInsights()
                 .Build();
 
             host.Run();

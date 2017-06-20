@@ -25,7 +25,6 @@
         //Functions
         self.getWebNotesData = function (webnotes) {
             $.get('getWebNotes', { webnotes: webnotes }, function (data) {
-                console.log(data);
                 var observableData = {
                     notes: ko.observableArray(data.notes.map(function (note) {
                         note.isEditable = ko.observable(false);
