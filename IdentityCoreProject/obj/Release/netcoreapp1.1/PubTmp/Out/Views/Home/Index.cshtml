@@ -46,37 +46,39 @@
 <div id="notes-div">
 
     <!--Note template-->
-    <table class="table table-bordered" data-bind="with: webNotesData">
-        <thead><tr><th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
-        <tbody data-bind="foreach: notes">
-            <tr>
-            <td data-bind="visible: !(isEditable()), style: {'transform': 'translateX(-20px)'}"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color, 'transform': 'translate(-15px, 5px)'}"></i>
-                <span data-bind="text: title"></span>
+    <div class="table-responsive">
+        <table class="table table-condensed" data-bind="with: webNotesData">
+            <thead><tr> <th class="text-center">Priority</th> <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+            <tbody data-bind="foreach: notes">
+                <tr>
+                    <td class="text-center"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color}"></i></td>
+                    <td data-bind="visible: !(isEditable())">
+                        <span data-bind="text: title"></span>
 
-            <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control" /></td>
+                    <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control" /></td>
 
-            <td data-bind="visible: !(isEditable())"><span data-bind="text: content"></span></td>
-            <td data-bind="visible: isEditable"><textarea rows="3" data-bind="value: $root.noteContent" class="form-control"></textarea></td>
+                    <td data-bind="visible: !(isEditable())"><span data-bind="text: content"></span></td>
+                    <td data-bind="visible: isEditable"><textarea rows="3" data-bind="value: $root.noteContent" class="form-control"></textarea></td>
 
-            <td>
-                <button class="btn btn-info" data-bind="click: $root.EditNote.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-edit"></i></button>
+                    <td>
+                        <button class="btn btn-info" data-bind="click: $root.EditNote.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-edit" id="font-bigger"></i></button>
 
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal"
-                        data-bind="visible: !(isEditable()), click: function () { $root.setNoteToEmail(id);}">
-                <i class="glyphicon glyphicon-envelope"></i>
-                </button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal"
+                                data-bind="visible: !(isEditable()), click: function () { $root.setNoteToEmail(id);}">
+                            <i class="glyphicon glyphicon-envelope font-bigger"></i>
+                        </button>
 
-                <button class="btn btn-danger"  data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
-                                                                <i class="glyphicon glyphicon-remove"></i>
-                                                                </button>       
-                
-                <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check"></i></button>
-                
-            </td> 
-            </tr>
-        </tbody>
-    </table>
+                        <button class="btn btn-danger" data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
+                            <i class="glyphicon glyphicon-remove font-bigger"></i>
+                        </button>
 
+                        <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check" id="font-bigger"></i></button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <!--Email Modal-->
     <div class="modal fade email-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-sm" role="document">
