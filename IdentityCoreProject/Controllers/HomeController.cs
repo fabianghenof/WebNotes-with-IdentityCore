@@ -112,7 +112,7 @@ namespace IdentityCoreProject.Controllers
             var myWebNotes = _webNoteService.GetUsersNotes(userId);
             var stream  = _webNoteService.DownloadNotes(userId, myWebNotes);
 
-            return File(stream, "text/csv", "votes.csv");
+            return File(stream, "text/csv", "WebNotes("+ User.Identity.Name +").csv");
         }
     }
 }

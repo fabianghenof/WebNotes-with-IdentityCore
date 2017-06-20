@@ -33,6 +33,7 @@
     <Content Include="wwwroot\css\site.min.css" />
     <Content Include="wwwroot\js\Note.js" />
     <Content Include="wwwroot\js\WebNotesVM.js" />
+    <Content Include="wwwroot\lib\knockout\knockout.validation.min.js" />
     <Content Include="wwwroot\lib\knockout\knockout-3.4.2.js" />
     <Content Include="wwwroot\lib\knockout\knockout.mapping-latest.js" />
     <Content Include="wwwroot\lib\toastr\toastr.css" />
@@ -46,7 +47,6 @@
     <PackageReference Include="automapper" Version="6.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
     <PackageReference Include="CsvHelper" Version="2.16.3" />
-    <PackageReference Include="Knockout.Validation" Version="2.0.3" />
     <PackageReference Include="knockoutjs" Version="3.4.2" />
     <PackageReference Include="mailkit" Version="1.16.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

@@ -14,7 +14,7 @@
         self.emailVisible = ko.observable(false);
         self.editVisible = ko.observable(false);
         self.textVisible = ko.observable(true);
-        self.emailToSendTo = ko.observable();
+        self.emailToSendTo = ko.observable().extend({email: true, required: true});
         self.webNotesData = ko.observable();
         self.noteToEmail = ko.observable();
         self.noteTitle = ko.observable();
@@ -132,9 +132,11 @@
             note.isEditable(!note.isEditable());
         };
         self.saveNote = function (note) {
+            document.body.style.cursor = 'wait';
             $.post('updateNoteContent', { id: note.id, content: self.noteContent() }).then(function () {
                 $.post('updateNoteTitle', { id: note.id, title: self.noteTitle() }).then(function () {
                     self.getWebNotesData();
+                    document.body.style.cursor = 'default';
                     toastr.success('WebNote successfully updated!');
                 });
             });

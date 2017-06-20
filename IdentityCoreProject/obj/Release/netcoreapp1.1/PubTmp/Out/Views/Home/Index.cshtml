@@ -50,7 +50,7 @@
         <thead><tr><th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
         <tbody data-bind="foreach: notes">
             <tr>
-            <td data-bind="visible: !(isEditable())"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color, 'transform': 'translate(-35px, 5px)'}"></i>
+            <td data-bind="visible: !(isEditable()), style: {'transform': 'translateX(-20px)'}"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color, 'transform': 'translate(-15px, 5px)'}"></i>
                 <span data-bind="text: title"></span>
 
             <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control" /></td>
@@ -82,13 +82,17 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <h4 class="text-center">Email this note to someone?</h4>
-                <form class="form-group form-group-sm form-inline text-center">
-                    <input class="form-control input-sm" placeholder="Email" data-bind="value: emailToSendTo" required="required"/>
+                    <input class="form-control center-block" type="email" placeholder="Email" data-bind="value: emailToSendTo, valueUpdate: 'afterkeydown'" />
+                <form class="form-group form-inline text-center">
                     <button type="button" class="btn btn-default form-control" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary form-control" data-bind="click: $root.emailNote">
+                    <!--Button for a VALID email-->
+                    <button class="btn btn-primary form-control" data-bind="click: $root.emailNote, visible: emailToSendTo.isValid()">
                         Send
                     </button>
-
+                    <!--Button for an INVALID email-->
+                    <button type="button" class="btn btn-default form-control" data-bind="visible: !emailToSendTo.isValid()" id="button-disabled">
+                        Send
+                    </button>
                 </form>
             </div>
         </div>

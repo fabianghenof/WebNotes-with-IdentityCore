@@ -59,12 +59,6 @@
           "lib/netstandard1.3/CsvHelper.dll": {}
         }
       },
-      "Knockout.Validation/2.0.3": {
-        "type": "package",
-        "dependencies": {
-          "knockoutjs": "2.3.0"
-        }
-      },
       "knockoutjs/3.4.2": {
         "type": "package"
       },
@@ -4617,18 +4611,6 @@
         "lib/netstandard1.3/CsvHelper.xml",
         "lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.dll",
         "lib/portable40-net40+sl5+win8+wp8+wpa81/CsvHelper.xml"
-      ]
-    },
-    "Knockout.Validation/2.0.3": {
-      "sha512": "bME/w0LRQ3bOuUgHygQYNjxs7rXeqmXW30djPOecREXb0KZLy/QgPOtpjozF4q8BeBgSx5y8O1WkDU7EoLaAAQ==",
-      "type": "package",
-      "path": "knockout.validation/2.0.3",
-      "files": [
-        "content/Scripts/knockout.validation.js",
-        "content/Scripts/knockout.validation.min.js",
-        "content/Scripts/knockout.validation.min.js.map",
-        "knockout.validation.2.0.3.nupkg.sha512",
-        "knockout.validation.nuspec"
       ]
     },
     "knockoutjs/3.4.2": {
@@ -11573,7 +11555,6 @@
     ".NETCoreApp,Version=v1.1": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 2.0.1",
       "CsvHelper >= 2.16.3",
-      "Knockout.Validation >= 2.0.3",
       "Microsoft.ApplicationInsights.AspNetCore >= 2.0.0",
       "Microsoft.AspNetCore >= 1.1.2",
       "Microsoft.AspNetCore.Authentication.Cookies >= 1.1.2",
@@ -11618,12 +11599,6 @@
         "netcoreapp1.1": {
           "projectReferences": {}
         }
-      }
-    },
-    "dependencies": {
-      "Knockout.Validation": {
-        "target": "Package",
-        "version": "[2.0.3, )"
       }
     },
     "frameworks": {
