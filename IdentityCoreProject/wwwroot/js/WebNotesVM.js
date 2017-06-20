@@ -149,12 +149,12 @@
         });
         };
         self.moveNoteUp = function (note) {
-            $.post('moveNoteUp', { idOfClickedNote: note.id}).then(function () {
+            $.post('moveNoteUp', { idOfClickedNote: note.id, userId: note.userId}).then(function () {
                 self.getWebNotesData();
             });
         };
         self.moveNoteDown = function (note) {
-            $.post('moveNoteDown', { idOfClickedNote: note.id}).then(function () {
+            $.post('moveNoteDown', { idOfClickedNote: note.id, userId: note.userId}).then(function () {
                 self.getWebNotesData();
             });
         };

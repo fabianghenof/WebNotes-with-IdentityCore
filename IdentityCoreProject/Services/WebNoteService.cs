@@ -103,9 +103,11 @@ namespace IdentityCoreProject.Services
             _context.SaveChanges();
         }
         
-        public void MoveNoteUp(int idOfClickedNote)
+        public void MoveNoteUp(int idOfClickedNote, string userId)
         {
-            var noteClickedOn = _context.WebNotes.FirstOrDefault(x => x.Id == idOfClickedNote);
+            var noteClickedOn = _context.WebNotes
+                .Where(x => x.UserId == userId)
+                .FirstOrDefault(x => x.Id == idOfClickedNote);
             var noteAbove = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex - 1);
             int orderIndexToMoveTo = noteAbove.OrderIndex;
 
@@ -118,9 +120,11 @@ namespace IdentityCoreProject.Services
             _context.SaveChanges();
         }
 
-        public void MoveNoteDown(int idOfClickedNote)
+        public void MoveNoteDown(int idOfClickedNote, string userId)
         {
-            var noteClickedOn = _context.WebNotes.FirstOrDefault(x => x.Id == idOfClickedNote);
+            var noteClickedOn = _context.WebNotes
+                .Where(x => x.UserId == userId)
+                .FirstOrDefault(x => x.Id == idOfClickedNote);
             var noteBelow = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex + 1);
             int orderIndexToMoveTo = noteBelow.OrderIndex;
 

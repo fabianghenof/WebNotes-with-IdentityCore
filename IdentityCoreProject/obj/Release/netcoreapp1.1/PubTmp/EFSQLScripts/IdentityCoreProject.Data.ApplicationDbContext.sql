@@ -250,3 +250,18 @@ END;
 
 GO
 
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20170620113128_third')
+BEGIN
+    ALTER TABLE [AspNetUsers] ADD [WebnoteSortingOption] nvarchar(max);
+END;
+
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20170620113128_third')
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20170620113128_third', N'1.1.2');
+END;
+
+GO
+
