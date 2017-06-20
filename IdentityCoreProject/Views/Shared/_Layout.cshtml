@@ -5,7 +5,7 @@
     <script>window.viewModelData = {  }</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - IdentityCoreProject</title>
+    <title>@ViewData["Title"] - WEBNOTES</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -43,12 +43,7 @@
         <div class="col-xs-12">
             <hr />
             <footer>
-                @await Html.PartialAsync("_LoginPartial2")
-                @{ 
-                    var dateTime = DateTime.Now;
-                    var currentYear = dateTime.Year;
-                }
-                <p>&copy; @currentYear - WebNotes</p>
+                <p>&copy; 2017 - WebNotes</p>
             </footer>
         </div>
         </div>
@@ -72,6 +67,7 @@
                 integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>
         <script src="~/lib/knockout/knockout-3.4.2.js"></script>
+        <script src="~/lib/knockout/knockout.validation.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
