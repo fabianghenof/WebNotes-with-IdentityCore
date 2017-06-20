@@ -72,6 +72,9 @@
                             <i class="glyphicon glyphicon-remove font-bigger"></i>
                         </button>
 
+                        <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this)"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                        <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this)"><i class="glyphicon glyphicon-arrow-down"></i></button>
+
                         <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check" id="font-bigger"></i></button>
 
                     </td>

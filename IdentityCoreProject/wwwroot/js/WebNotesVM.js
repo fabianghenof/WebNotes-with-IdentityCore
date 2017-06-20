@@ -144,7 +144,19 @@
 
         };
         self.groupByPriority = function () {
-            $.post('groupByPriority');
+            $.post('groupByPriority').then(function () {
+                self.getWebNotesData();
+        });
+        };
+        self.moveNoteUp = function (note) {
+            $.post('moveNoteUp', { idOfClickedNote: note.id}).then(function () {
+                self.getWebNotesData();
+            });
+        };
+        self.moveNoteDown = function (note) {
+            $.post('moveNoteDown', { idOfClickedNote: note.id}).then(function () {
+                self.getWebNotesData();
+            });
         };
 
         self.getWebNotesData();

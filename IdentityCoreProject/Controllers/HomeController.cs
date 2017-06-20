@@ -22,25 +22,20 @@ namespace IdentityCoreProject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebNoteService _webNoteService;
-        private readonly string sortingOption;
 
         public HomeController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
-            IWebNoteService webNoteService,
-            string _sortingOption)
+            IWebNoteService webNoteService)
         {
             _context = context;
             _userManager = userManager;
             _webNoteService = webNoteService;
-
-            _sortingOption = _webNoteService.GetUsersSortingOption();
-            sortingOption = _sortingOption;
         }
 
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-
+            var sortingOption = _webNoteService.GetUsersSortingOption(userId);
             var notes = _webNoteService.GetUsersNotes(userId, sortingOption);
                 return View(notes);
         }
@@ -49,8 +44,11 @@ namespace IdentityCoreProject.Controllers
         public IActionResult GetWebNotes()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
+            var sortingOption = _webNoteService.GetUsersSortingOption(userId);
             var webnotes = _webNoteService.GetUsersNotes(userId, sortingOption);
-                return Json(new { notes = webnotes });
+
+
+            return Json(new { notes = webnotes });
         }
 
         [HttpPost("updateNoteTitle")]
@@ -83,16 +81,16 @@ namespace IdentityCoreProject.Controllers
         }
 
         [HttpPost("moveNoteUp")]
-        public IActionResult MoveNoteUp(int idOfClickedNote, int idOfAboveNote)
+        public IActionResult MoveNoteUp(int idOfClickedNote)
         {
-            _webNoteService.MoveNoteUp(idOfClickedNote, idOfAboveNote);
+            _webNoteService.MoveNoteUp(idOfClickedNote);
             return Ok();
         }
 
         [HttpPost("moveNoteDown")]
-        public IActionResult MoveNoteDown(int idOfClickedNote, int idOfBelowNote)
+        public IActionResult MoveNoteDown(int idOfClickedNote)
         {
-            _webNoteService.MoveNoteDown(idOfClickedNote, idOfBelowNote);
+            _webNoteService.MoveNoteDown(idOfClickedNote);
             return Ok();
         }
 
@@ -115,14 +113,30 @@ namespace IdentityCoreProject.Controllers
         public IActionResult groupByPriority()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var notes = _webNoteService.GetUsersNotes(userId, sortingOption);
-            return View(notes);
+            var toUpdate = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var currentSortingOption = _webNoteService.GetUsersSortingOption(userId);
+
+            if (currentSortingOption == "byPriority")
+            {
+                toUpdate.WebnoteSortingOption = "byDate";
+                _context.Update(toUpdate);
+                _context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                toUpdate.WebnoteSortingOption = "byPriority";
+                _context.Update(toUpdate);
+                _context.SaveChanges();
+                return Ok();
+            }
         }
 
         [HttpGet]
         public FileResult DownloadNotes()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
+            var sortingOption = _webNoteService.GetUsersSortingOption(userId);
             var myWebNotes = _webNoteService.GetUsersNotes(userId, sortingOption);
             var stream  = _webNoteService.DownloadNotes(userId, myWebNotes);
 
