@@ -15,5 +15,6 @@ namespace IdentityCoreProject.Models
         }
 
         public virtual List<WebNote> WebNotes { get; set; }
+        public string WebnoteSortingOption { get; set; }
     }
 }

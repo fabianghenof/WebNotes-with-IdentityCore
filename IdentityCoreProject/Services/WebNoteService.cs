@@ -36,13 +36,31 @@ namespace IdentityCoreProject.Services
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public List<WebNote> GetUsersNotes(string userId)
+        public List<WebNote> GetUsersNotes(string userId, string sortingOption)
         {
-            var notes = userId == null ? new List<WebNote>() : _context.WebNotes
+            switch(sortingOption)
+            {
+                case "byDate":
+                    var notesByDate = userId == null ? new List<WebNote>() : _context.WebNotes
                 .Where(n => n.UserId == userId)
                 .OrderBy(x => x.OrderIndex)
                 .ToList();
-            return notes;
+                    return notesByDate;
+
+                case "byPriority":
+                    var notesByPriority = userId == null ? new List<WebNote>() : _context.WebNotes
+                .Where(n => n.UserId == userId)
+                .OrderBy(x => x.Color)
+                .ToList();
+                    return notesByPriority;
+                default:
+                    var notesByDat = userId == null ? new List<WebNote>() : _context.WebNotes
+                .Where(n => n.UserId == userId)
+                .OrderBy(x => x.OrderIndex)
+                .ToList();
+                    return notesByDat;
+            } 
+
         }
 
         public void UpdateTitle(int id, string title)
@@ -181,5 +199,10 @@ namespace IdentityCoreProject.Services
             //
         }
 
+        public string GetUsersSortingOption(string userId)
+        {
+            string sortingOption = _context.WebNotes.FirstOrDefault();
+            return sortingOption;
+        }
     }
 }

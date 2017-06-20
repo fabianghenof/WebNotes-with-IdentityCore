@@ -22,20 +22,26 @@ namespace IdentityCoreProject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebNoteService _webNoteService;
+        private readonly string sortingOption;
 
         public HomeController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
-            IWebNoteService webNoteService)
+            IWebNoteService webNoteService,
+            string _sortingOption)
         {
             _context = context;
             _userManager = userManager;
             _webNoteService = webNoteService;
+
+            _sortingOption = _webNoteService.GetUsersSortingOption();
+            sortingOption = _sortingOption;
         }
 
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var notes = _webNoteService.GetUsersNotes(userId);
+
+            var notes = _webNoteService.GetUsersNotes(userId, sortingOption);
                 return View(notes);
         }
 
@@ -43,7 +49,7 @@ namespace IdentityCoreProject.Controllers
         public IActionResult GetWebNotes()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var webnotes = _webNoteService.GetUsersNotes(userId);
+            var webnotes = _webNoteService.GetUsersNotes(userId, sortingOption);
                 return Json(new { notes = webnotes });
         }
 
@@ -105,11 +111,19 @@ namespace IdentityCoreProject.Controllers
             return Json(webnote);
         }
 
+        [HttpPost("groupByPriority")]
+        public IActionResult groupByPriority()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var notes = _webNoteService.GetUsersNotes(userId, sortingOption);
+            return View(notes);
+        }
+
         [HttpGet]
         public FileResult DownloadNotes()
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var myWebNotes = _webNoteService.GetUsersNotes(userId);
+            var myWebNotes = _webNoteService.GetUsersNotes(userId, sortingOption);
             var stream  = _webNoteService.DownloadNotes(userId, myWebNotes);
 
             return File(stream, "text/csv", "WebNotes("+ User.Identity.Name +").csv");

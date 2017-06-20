@@ -143,6 +143,9 @@
 
 
         };
+        self.groupByPriority = function () {
+            $.post('groupByPriority');
+        };
 
         self.getWebNotesData();
     }
