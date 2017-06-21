@@ -60,9 +60,11 @@
                 <tr>
                     <td class="text-center"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color}"></i></td>
                     <td data-bind="visible: !(isEditable())">
-                        <span data-bind="text: title"></span>
+                            <p data-bind="text: title"></p>
                     <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control" /></td>
-                    <td data-bind="visible: !(isEditable())"><span data-bind="text: content"></span></td>
+                    <td data-bind="visible: !(isEditable())">
+                            <p data-bind="text: content"></p>
+                    </td>
                     <td data-bind="visible: isEditable"><textarea rows="3" data-bind="value: $root.noteContent" class="form-control"></textarea></td>
                     <td>
                         <!--Note Tool Buttons-->
@@ -78,7 +80,7 @@
                             </button>
                         </div>
                         <!--Note Move Up/Down Buttons-->
-                        <div class="btn-group btn-group-sm">
+                        <div class="btn-group btn-group-sm" data-bind="visible: !($root.sortedByPriority())">
                             <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-up"></i></button>
                             <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-down"></i></button>
                         </div>

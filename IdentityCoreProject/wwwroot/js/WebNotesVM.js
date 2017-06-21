@@ -26,8 +26,7 @@
         self.initializeMovingArrowsVisibility = function () {
 
             $.get('getSortingOption', self.sortingOption).then(function () {
-                switch (self.sortingOption())
-                {
+                switch (self.sortingOption()) {
                     case 'byPriority':
                         self.sortedByPriority(true);
                         break;
@@ -36,7 +35,7 @@
                         break;
                 }
             });
-        }
+        };
         self.getWebNotesData = function (webnotes) {
             $.get('getWebNotes', { webnotes: webnotes }, function (data) {
                 var observableData = {
