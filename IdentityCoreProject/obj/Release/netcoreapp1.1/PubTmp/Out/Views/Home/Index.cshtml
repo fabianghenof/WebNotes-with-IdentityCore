@@ -55,31 +55,42 @@
                     <i class="glyphicon glyphicon-sort-by-attributes-alt" style="cursor: pointer"></i>
                     </a>
                 </th>
-                <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+                <th>Title</th> <th>Content</th> <th>Tools</th> <th>File</th></tr></thead>
             <tbody data-bind="foreach: notes">
                 <tr>
                     <td class="text-center"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color}"></i></td>
                     <td data-bind="visible: !(isEditable())">
                         <span data-bind="text: title"></span>
-
                     <td data-bind="visible: isEditable"><input type="text" data-bind="value: $root.noteTitle" class="form-control" /></td>
-
                     <td data-bind="visible: !(isEditable())"><span data-bind="text: content"></span></td>
                     <td data-bind="visible: isEditable"><textarea rows="3" data-bind="value: $root.noteContent" class="form-control"></textarea></td>
-
                     <td>
-                        <button class="btn btn-info" data-bind="click: $root.EditNote.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-edit" id="font-bigger"></i></button>
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal"
-                                data-bind="visible: !(isEditable()), click: function () { $root.setNoteToEmail(id);}">
-                            <i class="glyphicon glyphicon-envelope font-bigger"></i>
-                        </button>
-                        <button class="btn btn-danger" data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
-                            <i class="glyphicon glyphicon-remove font-bigger"></i>
-                        </button>
-                        <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                        <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-down"></i></button>
-                        <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check" id="font-bigger"></i></button>
+                        <!--Note Tool Buttons-->
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-info" data-bind="click: $root.EditNote.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-edit" id="font-bigger"></i></button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target=".email-modal"
+                                    data-bind="visible: !(isEditable()), click: function () { $root.setNoteToEmail(id);}">
+                                <i class="glyphicon glyphicon-envelope font-bigger"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target=".attach-modal"
+                                    data-bind="visible: !(isEditable()), click: function () { $root.setNoteToEmail(id);}">
+                                <i class="glyphicon glyphicon-file"></i>
+                            </button>
+                        </div>
+                        <!--Note Move Up/Down Buttons-->
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                            <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                        </div>
+                        <!--Note Delete Button-->
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-danger" data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check"></i></button>
                     </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
@@ -105,4 +116,22 @@
         </div>
     </div>
    
+    <!--File Attach Modal-->
+    <div class="modal fade attach-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <h4 class="text-center">Attach a file to this note?</h4>
+                
+                <div class="form-group text-center well">
+                    <label for="exampleInputFile">WebNotes File Input</label>
+                    <input type="file" id="exampleInputFile">
+                </div>
+
+                <form class="form-group form-inline text-center">
+                    <button type="button" class="btn btn-default form-control" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary form-control" data-dismiss="modal">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
