@@ -108,16 +108,20 @@ namespace IdentityCoreProject.Services
             var noteClickedOn = _context.WebNotes
                 .Where(x => x.UserId == userId)
                 .FirstOrDefault(x => x.Id == idOfClickedNote);
+
             var noteAbove = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex - 1);
-            int orderIndexToMoveTo = noteAbove.OrderIndex;
+            if (noteAbove != null)
+            {
+                int orderIndexToMoveTo = noteAbove.OrderIndex;
+                int temp = noteClickedOn.OrderIndex;
 
-            int temp = noteClickedOn.OrderIndex;
-
-            noteClickedOn.OrderIndex = orderIndexToMoveTo;
-            _context.Update(noteClickedOn);
-            noteAbove.OrderIndex = temp;
-            _context.Update(noteAbove);
-            _context.SaveChanges();
+                noteClickedOn.OrderIndex = orderIndexToMoveTo;
+                noteAbove.OrderIndex = temp;
+                _context.Update(noteClickedOn);
+                _context.Update(noteAbove);
+                _context.SaveChanges();
+            }
+            else { return; }
         }
 
         public void MoveNoteDown(int idOfClickedNote, string userId)
@@ -172,8 +176,8 @@ namespace IdentityCoreProject.Services
 
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Eu", "fabian.ghenof@xconta.ro"));
-            message.To.Add(new MailboxAddress("Tu", email));
+            message.From.Add(new MailboxAddress("WebNotes", "fabian.ghenof@xconta.ro"));
+            message.To.Add(new MailboxAddress(email, email));
             message.Subject = "WebNote from " + loggedInEmail;
             message.Body = new TextPart("html")
             {

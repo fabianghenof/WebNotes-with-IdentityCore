@@ -47,16 +47,20 @@ namespace IdentityCoreProject.Controllers
             var sortingOption = _webNoteService.GetUsersSortingOption(userId);
             var webnotes = _webNoteService.GetUsersNotes(userId, sortingOption);
 
-            for(int i = 0; i < webnotes.Count(); i++)
+            if(sortingOption == "byDate")
             {
-                var toUpdate = _context.WebNotes
-                    .Where(x => x.UserId == userId)
-                    .FirstOrDefault(x => x.Id == webnotes[i].Id);
-                toUpdate.OrderIndex = i;
-                _context.Update(toUpdate);
-                webnotes[i].OrderIndex = i;
+                for (int i = 0; i < webnotes.Count(); i++)
+                {
+                    var toUpdate = _context.WebNotes
+                        .Where(x => x.UserId == userId)
+                        .FirstOrDefault(x => x.Id == webnotes[i].Id);
+                    toUpdate.OrderIndex = i;
+                    _context.Update(toUpdate);
+                    webnotes[i].OrderIndex = i;
+                }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
+            
 
             return Json(new { notes = webnotes });
         }
