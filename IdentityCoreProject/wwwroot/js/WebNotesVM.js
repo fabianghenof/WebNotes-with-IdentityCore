@@ -5,8 +5,7 @@
     var $colorButton = $('#color-button');
     var $colorButtonText = $('#color-button-text');
     var noteColor = '#35d63d';
-    var currentTitle = "";
-    var currentContent = "";
+    var _sortingOption = '';
 
     function WebNotesViewModel() {
         //Properties
@@ -21,9 +20,23 @@
         self.noteContent = ko.observable();
         self.sortingOption = ko.observable();
         self.sortedByPriority = ko.observable();
-
+        
 
         //Functions
+        self.initializeMovingArrowsVisibility = function () {
+
+            $.get('getSortingOption', self.sortingOption).then(function () {
+                switch (self.sortingOption())
+                {
+                    case 'byPriority':
+                        self.sortedByPriority(true);
+                        break;
+                    case 'byDate':
+                        self.sortedByPriority(false);
+                        break;
+                }
+            });
+        }
         self.getWebNotesData = function (webnotes) {
             $.get('getWebNotes', { webnotes: webnotes }, function (data) {
                 var observableData = {
@@ -176,6 +189,7 @@
             });
         };
 
+        self.initializeMovingArrowsVisibility();
         self.getWebNotesData();
     }
 
