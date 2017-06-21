@@ -129,17 +129,20 @@ namespace IdentityCoreProject.Services
             var noteClickedOn = _context.WebNotes
                 .Where(x => x.UserId == userId)
                 .FirstOrDefault(x => x.Id == idOfClickedNote);
+
             var noteBelow = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex + 1);
-            int orderIndexToMoveTo = noteBelow.OrderIndex;
+            if (noteBelow != null)
+            {
+                int orderIndexToMoveTo = noteBelow.OrderIndex;
+                int temp = noteClickedOn.OrderIndex;
 
-            int temp = noteClickedOn.OrderIndex;
-
-            noteClickedOn.OrderIndex = noteBelow.OrderIndex;
-            _context.Update(noteClickedOn);
-            noteBelow.OrderIndex = temp;
-            _context.Update(noteBelow);
-
-            _context.SaveChanges();
+                noteClickedOn.OrderIndex = noteBelow.OrderIndex;
+                noteBelow.OrderIndex = temp;
+                _context.Update(noteClickedOn);
+                _context.Update(noteBelow);
+                _context.SaveChanges();
+            }
+            else { return; }
         }
 
         public MemoryStream DownloadNotes(string userId, List<WebNote> myWebNotes)
