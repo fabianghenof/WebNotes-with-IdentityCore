@@ -105,44 +105,55 @@ namespace IdentityCoreProject.Services
         
         public void MoveNoteUp(int idOfClickedNote, string userId)
         {
-            var noteClickedOn = _context.WebNotes
+            var userSortingOption = GetUsersSortingOption(userId);
+            if (userSortingOption == "byDate")
+            {
+                var noteClickedOn = _context.WebNotes
                 .Where(x => x.UserId == userId)
                 .FirstOrDefault(x => x.Id == idOfClickedNote);
 
-            var noteAbove = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex - 1);
-            if (noteAbove != null)
-            {
-                int orderIndexToMoveTo = noteAbove.OrderIndex;
-                int temp = noteClickedOn.OrderIndex;
+                var noteAbove = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex - 1);
+                if (noteAbove != null)
+                {
+                    int orderIndexToMoveTo = noteAbove.OrderIndex;
+                    int temp = noteClickedOn.OrderIndex;
 
-                noteClickedOn.OrderIndex = orderIndexToMoveTo;
-                noteAbove.OrderIndex = temp;
-                _context.Update(noteClickedOn);
-                _context.Update(noteAbove);
-                _context.SaveChanges();
+                    noteClickedOn.OrderIndex = orderIndexToMoveTo;
+                    noteAbove.OrderIndex = temp;
+                    _context.Update(noteClickedOn);
+                    _context.Update(noteAbove);
+                    _context.SaveChanges();
+                }
+                else { return; }
             }
             else { return; }
         }
 
         public void MoveNoteDown(int idOfClickedNote, string userId)
         {
-            var noteClickedOn = _context.WebNotes
-                .Where(x => x.UserId == userId)
-                .FirstOrDefault(x => x.Id == idOfClickedNote);
-
-            var noteBelow = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex + 1);
-            if (noteBelow != null)
+            var userSortingOption = GetUsersSortingOption(userId);
+            if (userSortingOption == "byDate")
             {
-                int orderIndexToMoveTo = noteBelow.OrderIndex;
-                int temp = noteClickedOn.OrderIndex;
+                var noteClickedOn = _context.WebNotes
+                    .Where(x => x.UserId == userId)
+                    .FirstOrDefault(x => x.Id == idOfClickedNote);
 
-                noteClickedOn.OrderIndex = noteBelow.OrderIndex;
-                noteBelow.OrderIndex = temp;
-                _context.Update(noteClickedOn);
-                _context.Update(noteBelow);
-                _context.SaveChanges();
+                var noteBelow = _context.WebNotes.FirstOrDefault(x => x.OrderIndex == noteClickedOn.OrderIndex + 1);
+                if (noteBelow != null)
+                {
+                    int orderIndexToMoveTo = noteBelow.OrderIndex;
+                    int temp = noteClickedOn.OrderIndex;
+
+                    noteClickedOn.OrderIndex = noteBelow.OrderIndex;
+                    noteBelow.OrderIndex = temp;
+                    _context.Update(noteClickedOn);
+                    _context.Update(noteBelow);
+                    _context.SaveChanges();
+                }
+                else { return; }
             }
-            else { return; }
+
+            else { return;  }
         }
 
         public MemoryStream DownloadNotes(string userId, List<WebNote> myWebNotes)

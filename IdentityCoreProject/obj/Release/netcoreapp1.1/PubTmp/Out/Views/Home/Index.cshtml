@@ -48,7 +48,14 @@
     <!--Note template-->
     <div class="table-responsive">
         <table class="table table-bordered" data-bind="with: webNotesData">
-            <thead><tr> <th class="text-center">Priority <a data-bind="click: $root.groupByPriority"><i class="glyphicon glyphicon-th-list" style="cursor: pointer"></i></a><th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
+            <thead><tr> 
+                <th class="text-center">
+                    Priority 
+                    <a data-bind="click: $root.groupByPriority">
+                    <i class="glyphicon glyphicon-sort-by-attributes-alt" style="cursor: pointer"></i>
+                    </a>
+                </th>
+                <th>Title</th> <th>Content</th> <th>Tools</th> </tr></thead>
             <tbody data-bind="foreach: notes">
                 <tr>
                     <td class="text-center"><i class="glyphicon glyphicon-bookmark" data-bind="style: {'font-size': '150%', 'color': color}"></i></td>

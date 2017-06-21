@@ -21,7 +21,6 @@
         self.noteContent = ko.observable();
 
 
-
         //Functions
         self.getWebNotesData = function (webnotes) {
             $.get('getWebNotes', { webnotes: webnotes }, function (data) {
@@ -154,7 +153,7 @@
             });
         };
         self.moveNoteDown = function (note) {
-            $.post('moveNoteDown', { idOfClickedNote: note.id, userId: note.userId}).then(function () {
+            $.post('moveNoteDown', { idOfClickedNote: note.id, userId: note.userId }).then(function () {
                 self.getWebNotesData();
             });
         };

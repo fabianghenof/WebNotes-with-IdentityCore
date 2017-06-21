@@ -8,9 +8,9 @@
     <title>@ViewData["Title"] - WEBNOTES</title>
 
     <environment names="Development">
+        <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link href="~/lib/toastr/toastr.css" rel="stylesheet" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
@@ -43,6 +43,7 @@
         <div class="col-xs-12">
             <hr />
             <footer>
+                @await Html.PartialAsync("_LoginPartial2")
                 <p>&copy; 2017 - WebNotes</p>
             </footer>
         </div>

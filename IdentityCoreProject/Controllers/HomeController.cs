@@ -147,6 +147,14 @@ namespace IdentityCoreProject.Controllers
             }
         }
 
+        [HttpGet("getSortingOption")]
+        public string GetSortingOption()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var sortingOption = _webNoteService.GetUsersSortingOption(userId);
+            return sortingOption;
+        }
+
         [HttpGet]
         public FileResult DownloadNotes()
         {
