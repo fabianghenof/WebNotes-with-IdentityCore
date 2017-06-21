@@ -20,11 +20,7 @@
         self.noteTitle = ko.observable();
         self.noteContent = ko.observable();
         self.sortingOption = ko.observable();
-        self.sortBPr = ""; $.get('getSortingOption', self.sortBPr)
-        if (self.sortBPr == "byDate")
-        { self.sortedByPriority = ko.observable(false); }
-        else { self.sortedByPriority = ko.observable(true);}
-        
+        self.sortedByPriority = ko.observable();
 
 
         //Functions
@@ -33,7 +29,6 @@
                 var observableData = {
                     notes: ko.observableArray(data.notes.map(function (note) {
                         note.isEditable = ko.observable(false);
-                        console.log(note);
                         return note;
                     }))
                 };

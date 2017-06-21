@@ -76,8 +76,8 @@
                         <button class="btn btn-danger" data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
                             <i class="glyphicon glyphicon-remove font-bigger"></i>
                         </button>
-                        <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this), visible: !(isEditable()), enable: !($root.sortedByPriority())"><i class="glyphicon glyphicon-arrow-up"></i></button>
-                        <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this), visible: !(isEditable()), enable: !($root.sortedByPriority())"><i class="glyphicon glyphicon-arrow-down"></i></button>
+                        <button class="btn btn-default" data-bind="click: $root.moveNoteUp.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-up"></i></button>
+                        <button class="btn btn-default" data-bind="click: $root.moveNoteDown.bind(this), visible: !(isEditable())"><i class="glyphicon glyphicon-arrow-down"></i></button>
                         <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check" id="font-bigger"></i></button>
                     </td>
                 </tr>

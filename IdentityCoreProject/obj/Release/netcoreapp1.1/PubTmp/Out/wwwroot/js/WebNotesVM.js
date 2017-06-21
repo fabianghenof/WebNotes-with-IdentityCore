@@ -12,13 +12,19 @@
         //Properties
         var self = this;
         self.emailVisible = ko.observable(false);
-        self.editVisible = ko.observable(false);
+        self.editVisible = ko.observable(true);
         self.textVisible = ko.observable(true);
         self.emailToSendTo = ko.observable().extend({email: true, required: true});
         self.webNotesData = ko.observable();
         self.noteToEmail = ko.observable();
         self.noteTitle = ko.observable();
         self.noteContent = ko.observable();
+        self.sortingOption = ko.observable();
+        self.sortBPr = ""; $.get('getSortingOption', self.sortBPr)
+        if (self.sortBPr == "byDate")
+        { self.sortedByPriority = ko.observable(false); }
+        else { self.sortedByPriority = ko.observable(true);}
+        
 
 
         //Functions
@@ -122,7 +128,6 @@
             );
         };
         self.EditNote = function (note) {
-            console.log(this);
             currentTitle = self.noteTitle();
             currentContent = self.noteContent();
             self.noteTitle(note.title);
@@ -143,13 +148,26 @@
 
         };
         self.groupByPriority = function () {
+            $.get('getSortingOption', self.sortingOption);
             $.post('groupByPriority').then(function () {
                 self.getWebNotesData();
+                switch (self.sortingOption()) {
+                    case 'byPriority':
+                        toastr.success('Sorting: Manual');
+                        self.sortedByPriority(false);
+                        break;
+                    case 'byDate':
+                        toastr.success('Sorting: Priority groups');
+                        self.sortedByPriority(true);
+                        break;
+                }
         });
         };
         self.moveNoteUp = function (note) {
-            $.post('moveNoteUp', { idOfClickedNote: note.id, userId: note.userId}).then(function () {
-                self.getWebNotesData();
+            $.get('getSortingOption', self.sortingOption).then(function () {
+                $.post('moveNoteUp', { idOfClickedNote: note.id, userId: note.userId }).then(function () {
+                    self.getWebNotesData();
+                }); 
             });
         };
         self.moveNoteDown = function (note) {
