@@ -143,20 +143,25 @@
 
         };
         self.groupByPriority = function () {
-            $.get('getSortingOption', self.sortingOption);
-            $.post('groupByPriority').then(function () {
-                self.getWebNotesData();
-                switch (self.sortingOption()) {
-                    case 'byPriority':
-                        toastr.success('Sorting: Manual');
-                        self.sortedByPriority(false);
-                        break;
-                    case 'byDate':
-                        toastr.success('Sorting: Priority groups');
-                        self.sortedByPriority(true);
-                        break;
-                }
-        });
+            $.get('getSortingOption', self.sortingOption).then(function () {
+                $.post('groupByPriority').then(function () {
+                    self.getWebNotesData();
+                    switch (self.sortingOption()) {
+                        case 'byPriority':
+                            toastr.success('Sorting: Manual');
+                            self.sortedByPriority(false);
+                            break;
+                        case 'byDate':
+                            toastr.success('Sorting: Priority groups');
+                            self.sortedByPriority(true);
+                            break;
+                        default:
+                            toastr.success('Sorting: Priority groups');
+                            self.sortedByPriority(true);
+                            break;
+                    }
+                });
+            });
         };
         self.moveNoteUp = function (note) {
             $.get('getSortingOption', self.sortingOption).then(function () {

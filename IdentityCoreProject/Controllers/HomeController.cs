@@ -51,14 +51,15 @@ namespace IdentityCoreProject.Controllers
             {
                 for (int i = 0; i < webnotes.Count(); i++)
                 {
-                    var toUpdate = _context.WebNotes
-                        .Where(x => x.UserId == userId)
-                        .FirstOrDefault(x => x.Id == webnotes[i].Id);
-                    toUpdate.OrderIndex = i;
-                    _context.Update(toUpdate);
+                    //var toUpdate = _context.WebNotes
+                    //    .Where(x => x.UserId == userId)
+                    //    .FirstOrDefault(x => x.Id == webnotes[i].Id);
+                    //toUpdate.OrderIndex = i;
+                    //_context.Update(toUpdate);
+                    //webnotes[i].OrderIndex = i;
                     webnotes[i].OrderIndex = i;
                 }
-                _context.SaveChanges();
+                //_context.SaveChanges();
             }
             
 

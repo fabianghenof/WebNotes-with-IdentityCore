@@ -20,11 +20,7 @@
         self.noteTitle = ko.observable();
         self.noteContent = ko.observable();
         self.sortingOption = ko.observable();
-        self.sortBPr = ""; $.get('getSortingOption', self.sortBPr)
-        if (self.sortBPr == "byDate")
-        { self.sortedByPriority = ko.observable(false); }
-        else { self.sortedByPriority = ko.observable(true);}
-        
+        self.sortedByPriority = ko.observable();
 
 
         //Functions
@@ -33,7 +29,6 @@
                 var observableData = {
                     notes: ko.observableArray(data.notes.map(function (note) {
                         note.isEditable = ko.observable(false);
-                        console.log(note);
                         return note;
                     }))
                 };
@@ -148,20 +143,25 @@
 
         };
         self.groupByPriority = function () {
-            $.get('getSortingOption', self.sortingOption);
-            $.post('groupByPriority').then(function () {
-                self.getWebNotesData();
-                switch (self.sortingOption()) {
-                    case 'byPriority':
-                        toastr.success('Sorting: Manual');
-                        self.sortedByPriority(false);
-                        break;
-                    case 'byDate':
-                        toastr.success('Sorting: Priority groups');
-                        self.sortedByPriority(true);
-                        break;
-                }
-        });
+            $.get('getSortingOption', self.sortingOption).then(function () {
+                $.post('groupByPriority').then(function () {
+                    self.getWebNotesData();
+                    switch (self.sortingOption()) {
+                        case 'byPriority':
+                            toastr.success('Sorting: Manual');
+                            self.sortedByPriority(false);
+                            break;
+                        case 'byDate':
+                            toastr.success('Sorting: Priority groups');
+                            self.sortedByPriority(true);
+                            break;
+                        default:
+                            toastr.success('Sorting: Priority groups');
+                            self.sortedByPriority(true);
+                            break;
+                    }
+                });
+            });
         };
         self.moveNoteUp = function (note) {
             $.get('getSortingOption', self.sortingOption).then(function () {
