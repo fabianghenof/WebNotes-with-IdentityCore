@@ -2,17 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IdentityCoreProject.Models;
-using Microsoft.AspNetCore.Hosting;
 using IdentityCoreProject.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using IdentityCoreProject.Services;
-using Microsoft.Extensions.Logging;
-using AutoMapper;
-using RazorLight;
+using System.IO;
 using System;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace IdentityCoreProject.Controllers
 {
@@ -51,15 +46,15 @@ namespace IdentityCoreProject.Controllers
             {
                 for (int i = 0; i < webnotes.Count(); i++)
                 {
-                    //var toUpdate = _context.WebNotes
-                    //    .Where(x => x.UserId == userId)
-                    //    .FirstOrDefault(x => x.Id == webnotes[i].Id);
-                    //toUpdate.OrderIndex = i;
-                    //_context.Update(toUpdate);
-                    //webnotes[i].OrderIndex = i;
+                    var toUpdate = _context.WebNotes
+                        .Where(x => x.UserId == userId)
+                        .FirstOrDefault(x => x.Id == webnotes[i].Id);
+                    toUpdate.OrderIndex = i;
+                    _context.Update(toUpdate);
                     webnotes[i].OrderIndex = i;
+                    //webnotes[i].OrderIndex = i;
                 }
-                //_context.SaveChanges();
+                _context.SaveChanges();
             }
             
 
@@ -154,6 +149,19 @@ namespace IdentityCoreProject.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             var sortingOption = _webNoteService.GetUsersSortingOption(userId);
             return sortingOption;
+        }
+
+        [HttpPost("uploadFileAttachment")]
+        public async Task<IActionResult> UploadFileAttachment(WebNote noteToAttachTo, string file)
+        {
+            var note = noteToAttachTo;
+
+            string fileWithoutHeaders = file.Substring(file.IndexOf(",") + 1);
+            byte[] convertedFile = Convert.FromBase64String(fileWithoutHeaders);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            _webNoteService.AddFileToNote(noteToAttachTo, convertedFile, user);
+            return Ok();
         }
 
         [HttpGet]

@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace IdentityCoreProject.Services
 {
@@ -222,6 +222,16 @@ namespace IdentityCoreProject.Services
 
                 return sortingOption;
             
+        }
+
+        public void AddFileToNote(WebNote noteToAttachTo, byte[] fileData, ApplicationUser user)
+        {
+            //Create a file
+            var newFileAttachment = new FileAttachment();
+            newFileAttachment.User = user;
+            //Asign it to a webnote
+
+           
         }
     }
 }

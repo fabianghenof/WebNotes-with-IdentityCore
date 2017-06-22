@@ -33,6 +33,12 @@
     <Content Include="wwwroot\css\site.min.css" />
     <Content Include="wwwroot\js\Note.js" />
     <Content Include="wwwroot\js\WebNotesVM.js" />
+    <Content Include="wwwroot\lib\knockout-file-bind.js" />
+    <Content Include="wwwroot\lib\knockout-file-bindings\bower.json" />
+    <Content Include="wwwroot\lib\knockout-file-bindings\demo.html" />
+    <Content Include="wwwroot\lib\knockout-file-bindings\knockout-file-bind.js" />
+    <Content Include="wwwroot\lib\knockout-file-bindings\knockout-file-bindings.css" />
+    <Content Include="wwwroot\lib\knockout-file-bindings\LICENSE" />
     <Content Include="wwwroot\lib\knockout\knockout.validation.min.js" />
     <Content Include="wwwroot\lib\knockout\knockout-3.4.2.js" />
     <Content Include="wwwroot\lib\knockout\knockout.mapping-latest.js" />
@@ -80,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connected Services\" />
+    <Folder Include="FileUploads\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>

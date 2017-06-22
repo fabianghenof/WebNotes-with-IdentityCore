@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace IdentityCoreProject.Models
 {
@@ -14,5 +15,7 @@ namespace IdentityCoreProject.Models
 
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
+
+        public FileAttachment FileAttachment { get; set; }
     }
 }

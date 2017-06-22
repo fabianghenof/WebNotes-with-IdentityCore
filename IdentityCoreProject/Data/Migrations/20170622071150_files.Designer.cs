@@ -8,9 +8,10 @@ using IdentityCoreProject.Data;
 namespace IdentityCoreProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170622071150_files")]
+    partial class files
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -73,15 +74,15 @@ namespace IdentityCoreProject.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<byte[]>("FileData");
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("Path");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("FileAttachment");
                 });
@@ -221,9 +222,9 @@ namespace IdentityCoreProject.Data.Migrations
 
             modelBuilder.Entity("IdentityCoreProject.Models.FileAttachment", b =>
                 {
-                    b.HasOne("IdentityCoreProject.Models.ApplicationUser", "User")
+                    b.HasOne("IdentityCoreProject.Models.ApplicationUser")
                         .WithMany("FileAttachments")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("IdentityCoreProject.Models.WebNote", b =>

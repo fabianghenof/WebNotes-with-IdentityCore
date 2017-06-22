@@ -16,5 +16,6 @@ namespace IdentityCoreProject.Services
         MemoryStream DownloadNotes(string userId, List<WebNote> notes);
         void SendEmail(WebNote note, string loggedInEmail, string email);
         string GetUsersSortingOption(string userId);
+        void AddFileToNote(WebNote noteToAttachTo, byte[] fileAttachment, ApplicationUser user);
     }
 }

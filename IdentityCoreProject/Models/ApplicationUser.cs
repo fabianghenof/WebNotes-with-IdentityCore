@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace IdentityCoreProject.Models
@@ -16,5 +13,6 @@ namespace IdentityCoreProject.Models
 
         public string WebnoteSortingOption { get; set; }
         public virtual List<WebNote> WebNotes { get; set; }
+        public virtual List<FileAttachment> FileAttachments { get; set; }
     }
 }
