@@ -8,9 +8,10 @@ using IdentityCoreProject.Data;
 namespace IdentityCoreProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170622134315_files4")]
+    partial class files4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -88,7 +89,7 @@ namespace IdentityCoreProject.Data.Migrations
                     b.HasIndex("WebNoteId")
                         .IsUnique();
 
-                    b.ToTable("FileAttachments");
+                    b.ToTable("FileAttachment");
                 });
 
             modelBuilder.Entity("IdentityCoreProject.Models.WebNote", b =>

@@ -194,7 +194,8 @@
             });
         };
         self.uploadFileAttachment = function () {
-            $.post('uploadFileAttachment', { noteToAttachTo: self.noteToAttachFileTo(), file: self.fileInput });
+            $.post('uploadFileAttachment', { noteToAttachTo: self.noteToAttachFileTo(), file: self.fileInput })
+                .then(function () { location.reload() });
         };
 
         self.initializeMovingArrowsVisibility();

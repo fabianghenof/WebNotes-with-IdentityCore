@@ -16,6 +16,7 @@ namespace IdentityCoreProject.Data
         }
 
         public DbSet<WebNote> WebNotes { get; set; }
+        public DbSet<FileAttachment> FileAttachments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

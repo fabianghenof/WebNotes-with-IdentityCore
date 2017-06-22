@@ -20,7 +20,11 @@
         self.noteContent = ko.observable();
         self.sortingOption = ko.observable();
         self.sortedByPriority = ko.observable();
-        
+        self.noteToAttachFileTo = ko.observable();
+
+        self.fileInput = ko.observable();
+        self.fileName = ko.observable();
+        self.someReader = new FileReader();
 
         //Functions
         self.initializeMovingArrowsVisibility = function () {
@@ -41,6 +45,7 @@
                 var observableData = {
                     notes: ko.observableArray(data.notes.map(function (note) {
                         note.isEditable = ko.observable(false);
+                        console.log(note);
                         return note;
                     }))
                 };
@@ -129,14 +134,15 @@
         self.setNoteToEmail = function (id) {
             $.get('getSingleWebNote', { id: id }, self.noteToEmail);
         };
+        self.setNoteToAttachFileTo = function (id) {
+            $.get('getSingleWebNote', { id: id }, self.noteToAttachFileTo);
+        };
         self.emailNote = function () {
             $.post('/sendEmail', { email: self.emailToSendTo(), note: self.noteToEmail() }).then(
                 location.reload()
             );
         };
         self.EditNote = function (note) {
-            currentTitle = self.noteTitle();
-            currentContent = self.noteContent();
             self.noteTitle(note.title);
             self.noteContent(note.content);
             note.isEditable(!note.isEditable());
@@ -186,6 +192,10 @@
             $.post('moveNoteDown', { idOfClickedNote: note.id, userId: note.userId }).then(function () {
                 self.getWebNotesData();
             });
+        };
+        self.uploadFileAttachment = function () {
+            $.post('uploadFileAttachment', { noteToAttachTo: self.noteToAttachFileTo(), file: self.fileInput })
+                .then(function () { location.reload() });
         };
 
         self.initializeMovingArrowsVisibility();

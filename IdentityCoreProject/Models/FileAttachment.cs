@@ -14,8 +14,12 @@ namespace IdentityCoreProject.Models
 
 
         public string UserId { get; set; }
+        public int WebNoteId { get; set; }
 
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
+
+        [ForeignKey("WebNoteId")]
+        public WebNote WebNote { get; set; }
     }
 }

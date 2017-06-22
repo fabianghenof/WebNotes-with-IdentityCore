@@ -12,8 +12,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
-    <environment names="Staging,Production">
-        <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+    <environment names="Staging,Production">        <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -52,6 +51,7 @@
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/knockout/knockout-3.4.2.js"></script>
+        <script src="~/lib/knockout-file-bindings/knockout-file-bind.js"></script>
         <script src="~/lib/knockout/knockout.mapping-latest.js"></script>
         <script src="~/lib/knockout/knockout.validation.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -67,6 +67,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
         </script>
+        <script src="~/lib/knockout-file-bindings/knockout-file-bindings.js"></script>
         <script src="~/lib/knockout/knockout-3.4.2.js"></script>
         <script src="~/lib/knockout/knockout.validation.min.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
