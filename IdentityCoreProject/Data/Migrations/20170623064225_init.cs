@@ -1,44 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace IdentityCoreProject.Data.Migrations
 {
-    public partial class second : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
+            migrationBuilder.AddColumn<int>(
+                name: "FileId",
                 table: "WebNotes",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WebNotes_UserId",
+                name: "IX_WebNotes_FileId",
                 table: "WebNotes",
-                column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_WebNotes_AspNetUsers_UserId",
-                table: "WebNotes",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                column: "FileId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_WebNotes_AspNetUsers_UserId",
+                name: "FK_WebNotes_FileAttachments_FileId",
                 table: "WebNotes");
 
+            migrationBuilder.DropTable(
+                name: "FileAttachments");
+
             migrationBuilder.DropIndex(
-                name: "IX_WebNotes_UserId",
+                name: "IX_WebNotes_FileId",
                 table: "WebNotes");
 
             migrationBuilder.DropColumn(
-                name: "UserId",
+                name: "FileId",
                 table: "WebNotes");
         }
     }

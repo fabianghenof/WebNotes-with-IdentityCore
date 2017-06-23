@@ -230,9 +230,13 @@ namespace IdentityCoreProject.Services
             var newFileAttachment = new FileAttachment();
             newFileAttachment.User = user;
             newFileAttachment.Name = "File Attachment";
+            newFileAttachment.WebNote = noteToAttachTo;
+            newFileAttachment.WebNoteId = noteToAttachTo.Id;
+            newFileAttachment.FileData = fileData;
             _context.FileAttachments.Add(newFileAttachment);
             //Add it to the user
             user.FileAttachments.Add(newFileAttachment);
+            _context.Update(user);
             //Asign it to a webnote
             var toUpdate = _context.WebNotes.FirstOrDefault(x => x.Id == noteToAttachTo.Id);
             toUpdate.FileAttachment = newFileAttachment;

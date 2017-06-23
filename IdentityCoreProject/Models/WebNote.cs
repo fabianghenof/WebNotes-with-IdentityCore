@@ -12,10 +12,11 @@ namespace IdentityCoreProject.Models
         public int OrderIndex { get; set; }
 
         public string UserId { get; set; }
-
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
+        public int FileId { get; set; }
+        [ForeignKey("FileId")]
         public FileAttachment FileAttachment { get; set; }
     }
 }

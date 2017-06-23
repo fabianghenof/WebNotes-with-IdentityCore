@@ -195,7 +195,7 @@
         };
         self.uploadFileAttachment = function () {
             $.post('uploadFileAttachment', { noteToAttachTo: self.noteToAttachFileTo(), file: self.fileInput })
-                .then(function () { location.reload() });
+                .then(function () { location.reload(); });
         };
 
         self.initializeMovingArrowsVisibility();

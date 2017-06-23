@@ -9,6 +9,7 @@ namespace IdentityCoreProject.Models
         public ApplicationUser()
         {
             WebNotes = new List<WebNote>();
+            FileAttachments = new List<FileAttachment>();
         }
 
         public string WebnoteSortingOption { get; set; }
