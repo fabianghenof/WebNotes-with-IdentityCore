@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using IdentityCoreProject.Data;
 
-namespace IdentityCoreProject.Data.Migrations
+namespace IdentityCoreProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170623064225_init")]
-    partial class init
+    [Migration("20170623111204_files")]
+    partial class files
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,15 +78,13 @@ namespace IdentityCoreProject.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("Type");
 
-                    b.Property<int>("WebNoteId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("WebNoteId");
 
                     b.ToTable("FileAttachments");
                 });
@@ -110,7 +108,8 @@ namespace IdentityCoreProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FileId");
+                    b.HasIndex("FileId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -229,18 +228,13 @@ namespace IdentityCoreProject.Data.Migrations
                     b.HasOne("IdentityCoreProject.Models.ApplicationUser", "User")
                         .WithMany("FileAttachments")
                         .HasForeignKey("UserId");
-
-                    b.HasOne("IdentityCoreProject.Models.WebNote", "WebNote")
-                        .WithMany()
-                        .HasForeignKey("WebNoteId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("IdentityCoreProject.Models.WebNote", b =>
                 {
                     b.HasOne("IdentityCoreProject.Models.FileAttachment", "FileAttachment")
-                        .WithMany()
-                        .HasForeignKey("FileId")
+                        .WithOne("WebNote")
+                        .HasForeignKey("IdentityCoreProject.Models.WebNote", "FileId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("IdentityCoreProject.Models.ApplicationUser", "User")

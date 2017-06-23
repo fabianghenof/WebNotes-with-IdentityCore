@@ -155,8 +155,13 @@ namespace IdentityCoreProject.Controllers
         public async Task<IActionResult> UploadFileAttachment(WebNote noteToAttachTo, string file)
         {
             var note = noteToAttachTo;
+
+            var fileSplit = file.Split(","[0]);
+            var fileTypeHeaders = fileSplit[0];
+            var convertedFile = Convert.FromBase64String(fileSplit[1]);
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            _webNoteService.AddFileToNote(noteToAttachTo, file, user);
+
+            _webNoteService.AddFileToNote(noteToAttachTo, convertedFile, fileTypeHeaders, user);
             return Ok();
         }
 

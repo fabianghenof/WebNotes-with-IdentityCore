@@ -10,6 +10,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <_NewBackgroundProfile>False</_NewBackgroundProfile>
   </PropertyGroup>
   <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:identitycoreproject20170608041442dbserver.database.windows.net,1433;Initial Catalog=IdentityCoreProject20170608041442_db;User Id=fabian.ghenof@identitycoreproject20170608041442dbserver;Password=Xconta2295@</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
     <EFMigrations Include="IdentityCoreProject.Data.ApplicationDbContext">
       <Value>Data Source=tcp:identitycoreproject20170608041442dbserver.database.windows.net,1433;Initial Catalog=IdentityCoreProject20170608041442_db;User Id=fabian.ghenof@identitycoreproject20170608041442dbserver;Password=Xconta2295@</Value>
     </EFMigrations>

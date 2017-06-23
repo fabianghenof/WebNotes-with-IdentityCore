@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using IdentityCoreProject.Data;
 
-namespace IdentityCoreProject.Data.Migrations
+namespace IdentityCoreProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170623074441_files2")]
-    partial class files2
+    [Migration("20170623114233_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,6 +77,8 @@ namespace IdentityCoreProject.Data.Migrations
                     b.Property<byte[]>("FileData");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Type");
 
                     b.Property<string>("UserId");
 

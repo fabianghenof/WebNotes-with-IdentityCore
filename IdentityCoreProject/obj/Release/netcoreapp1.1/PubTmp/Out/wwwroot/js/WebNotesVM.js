@@ -21,6 +21,7 @@
         self.sortingOption = ko.observable();
         self.sortedByPriority = ko.observable();
         self.noteToAttachFileTo = ko.observable();
+        self.deleteClickedOnce = ko.observable(false);
 
         self.fileInput = ko.observable();
         self.fileName = ko.observable();
@@ -42,9 +43,11 @@
         };
         self.getWebNotesData = function (webnotes) {
             $.get('getWebNotes', { webnotes: webnotes }, function (data) {
+                console.clear();
                 var observableData = {
                     notes: ko.observableArray(data.notes.map(function (note) {
                         note.isEditable = ko.observable(false);
+                        note.deleteClickedOnce = ko.observable(false);
                         console.log(note);
                         return note;
                     }))
@@ -122,14 +125,20 @@
                     break;
             }
         };
-        self.removeNote = function (idToDelete) {
-            //alert('test');
+        self.removeNote = function (idToDelete, note) {
             event.preventDefault();
-            //delete the note after a fade-out animation
-            $.post("deleteNote", { id: idToDelete }).then(function () {
-                toastr.error('WebNote ' + idToDelete + ' deleted');
-                self.getWebNotesData();
-            });
+            $('#delete-note-popover').text('?');
+            if (note.deleteClickedOnce() === true) {
+                $.post("deleteNote", { id: idToDelete }).then(function () {
+                    toastr.error('WebNote ' + idToDelete + ' deleted');
+                    self.getWebNotesData();
+                });
+            }
+            else {
+                note.deleteClickedOnce(true);
+                toastr.warning('Click again to confirm deletion');
+                setTimeout(function () { note.deleteClickedOnce(false); }, 2000);
+            }
         };
         self.setNoteToEmail = function (id) {
             $.get('getSingleWebNote', { id: id }, self.noteToEmail);
