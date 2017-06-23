@@ -87,13 +87,15 @@
                         <!--Note Delete Button-->
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-danger" data-bind="click: $root.removeNote.bind(this, id), visible: !(isEditable())">
-                                <i class="glyphicon glyphicon-remove"></i>
+                                <i class="glyphicon glyphicon-remove"></i><p data-bind="visible: $root.deleteClickedOnce">ads</p>
                             </button>
                         </div>
                         <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check"></i></button>
                     </td>
-                    <td><a data-bind="visible: fileId > 0"><i class="glyphicon glyphicon-paperclip"></i></a></td>
-                </tr>
+                    <td><a data-bind="visible: fileId > 0"><i class="glyphicon glyphicon-paperclip"></i></a>
+                    
+                    </td>
+                <tr data-bind="visible: false"><td></td></tr>
             </tbody>
         </table>
     </div>

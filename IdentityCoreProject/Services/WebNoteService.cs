@@ -74,8 +74,8 @@ namespace IdentityCoreProject.Services
 
         public void DeleteNote(int id)
         {
-            var toDelete = _context.WebNotes.SingleOrDefault(x => x.Id == id);
-            _context.WebNotes.Remove(toDelete);
+            var noteToDelete = _context.WebNotes.SingleOrDefault(x => x.Id == id);
+            _context.WebNotes.Remove(noteToDelete);
             _context.SaveChanges();
         }
 
@@ -224,7 +224,7 @@ namespace IdentityCoreProject.Services
             
         }
 
-        public void AddFileToNote(WebNote noteToAttachTo, byte[] fileData, ApplicationUser user)
+        public void AddFileToNote(WebNote noteToAttachTo, string fileData, ApplicationUser user)
         {
             //Create a file / Add it to DB
             var newFileAttachment = new FileAttachment();

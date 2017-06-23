@@ -92,7 +92,7 @@
                         </div>
                         <button class="btn btn-success" data-bind="visible: isEditable, click: $root.saveNote.bind(this)"><i class="glyphicon glyphicon-check"></i></button>
                     </td>
-                    <td><a data-bind="text: fileAttachment"></a></td>
+                    <td><a data-bind="visible: fileId > 0"><i class="glyphicon glyphicon-paperclip"></i></a></td>
                 </tr>
             </tbody>
         </table>

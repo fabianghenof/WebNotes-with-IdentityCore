@@ -8,9 +8,10 @@ using IdentityCoreProject.Data;
 namespace IdentityCoreProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170623074441_files2")]
+    partial class files2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -73,11 +74,9 @@ namespace IdentityCoreProject.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FileData");
+                    b.Property<byte[]>("FileData");
 
                     b.Property<string>("Name");
-
-                    b.Property<string>("Type");
 
                     b.Property<string>("UserId");
 
